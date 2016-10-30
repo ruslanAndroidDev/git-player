@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         searchButton = (ImageButton) findViewById(R.id.searchButton);
         searchButton.setOnClickListener(this);
-        if (!VKSdk.isLoggedIn()) {
+        if (VKSdk.isLoggedIn()) {
             showUI();
         } else {
             VKSdk.login(this, scope);

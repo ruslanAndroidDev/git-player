@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:icon="@drawable/music"
+        android:title="search"
+        android:id="@+id/searchSound"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"></item>
+</menu>

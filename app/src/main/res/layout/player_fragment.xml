@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#2138a7"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/bot_btn_repeat"
+        android:layout_weight="1"
+        android:layout_width="36dp"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:src="@drawable/ic_repeat_white_48dp"/>
+
+    <ImageButton
+        android:id="@+id/bot_btn_previous"
+        android:layout_weight="1"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:src="@drawable/ic_previous_white_48dp" />
+
+    <ImageButton
+        android:id="@+id/bot_btn_main"
+        android:layout_weight="1"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:src="@drawable/ic_play_white_72dp"/>
+    <ImageButton
+        android:id="@+id/bot_btn_next"
+        android:layout_weight="1"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:src="@drawable/ic_next_white_48dp"/>
+
+    <ImageButton
+        android:id="@+id/bot_btn_random"
+        android:layout_weight="1"
+        android:layout_width="36dp"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:src="@drawable/ic_random_white_48dp"/>
+</LinearLayout>

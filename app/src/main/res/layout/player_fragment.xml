@@ -11,7 +11,7 @@
         android:layout_width="36dp"
         android:layout_height="match_parent"
         android:background="@null"
-        android:src="@drawable/ic_repeat_white_48dp"/>
+        android:src="@drawable/ic_repeat_white_24dp"/>
 
     <ImageButton
         android:id="@+id/bot_btn_previous"
@@ -27,7 +27,7 @@
         android:layout_width="48dp"
         android:layout_height="match_parent"
         android:background="@null"
-        android:src="@drawable/ic_play_white_72dp"/>
+        android:src="@drawable/ic_play_white_60dp"/>
     <ImageButton
         android:id="@+id/bot_btn_next"
         android:layout_weight="1"
@@ -42,5 +42,5 @@
         android:layout_width="36dp"
         android:layout_height="match_parent"
         android:background="@null"
-        android:src="@drawable/ic_random_white_48dp"/>
+        android:src="@drawable/ic_random_white_24dp"/>
 </LinearLayout>

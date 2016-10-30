@@ -10,20 +10,19 @@ import com.example.pk.drawproject.bottomTabFragments.SoundFragment;
 /**
  * Created by pk on 28.10.2016.
  */
-public class MusicPagerAdapter extends FragmentPagerAdapter{
+public class MusicPagerAdapter extends FragmentPagerAdapter {
     int music_position;
 
-    public MusicPagerAdapter(FragmentManager fm,int position) {
+    public MusicPagerAdapter(FragmentManager fm, int position) {
         super(fm);
         this.music_position = position;
     }
 
     @Override
     public Fragment getItem(int position) {
-        if (position==0){
+        if (position == 0) {
             return new SoundFragment(music_position);
-        }
-        else return new PlayerFragment();
+        } else return new PlayerFragment();
     }
 
     @Override

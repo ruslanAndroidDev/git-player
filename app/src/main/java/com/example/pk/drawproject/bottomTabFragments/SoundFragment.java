@@ -12,12 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.pk.drawproject.myInterfaces.AdapterCallback;
 import com.example.pk.drawproject.MediaPlayerHelper;
 import com.example.pk.drawproject.R;
+import com.example.pk.drawproject.myInterfaces.AdapterCallback;
 import com.example.pk.drawproject.ui.MusicFragment;
 import com.example.pk.drawproject.ui.RecyclerViewAdapter;
-import com.example.pk.drawproject.ui.MainActivity;
 
 /**
  * Created by pk on 28.10.2016.
@@ -61,11 +60,13 @@ public class SoundFragment extends Fragment implements AdapterCallback {
         filingField(position);
     }
 
+    // Заповнення полів
     private void filingField(int position) {
         bot_tab_title.setText(MusicFragment.data.get(position).getTitle());
         bot_tab_artist.setText(MusicFragment.data.get(position).getArtist());
         bot_tab_btn.setImageResource(R.drawable.ic_pause);
     }
+
     TextView bot_tab_title;
     TextView bot_tab_artist;
     ImageButton bot_tab_btn;

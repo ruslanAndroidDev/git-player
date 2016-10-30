@@ -34,8 +34,6 @@ public class MusicFragment extends Fragment implements AdapterCallback {
     public static ArrayList<VkAudio> data;
     Context context;
     ViewPager musicPager;
-    int clickPosition;
-    int playerFlag;  //0 - music is stoped ; 1 - music is playing.
 
 
     @Nullable
@@ -56,30 +54,14 @@ public class MusicFragment extends Fragment implements AdapterCallback {
                 parse.execute(response.json);
             }
         });
-        //        if (savedInstanceState != null) {
-        //            playerFlag = savedInstanceState.getInt("flag");
-        //            clickPosition = savedInstanceState.getInt("position");
-        //            title = savedInstanceState.getString("title");
-        //            artist = savedInstanceState.getString("artist");
-        //            showBottomTab(artist, title);
-        //        }
         return v;
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt("flag", playerFlag);
-        outState.putInt("position", clickPosition);
-        outState.putString("title", data.get(clickPosition).getTitle());
-        outState.putString("artist", data.get(clickPosition).getArtist());
-    }
-
 
 
     @Override
     public void onRecyclerItemClick(int position) {
 
-        musicPager.setAdapter(new MusicPagerAdapter(getFragmentManager(),position));
+        musicPager.setAdapter(new MusicPagerAdapter(getFragmentManager(), position));
         musicPager.setVisibility(View.VISIBLE);
     }
 

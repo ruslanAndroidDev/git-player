@@ -31,9 +31,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.audiodata = audiodata;
         mRecyclerAdapterCallback = callback;
     }
-    public static void registerForCallbeck(AdapterCallback callback){
+
+    public static void registerForCallbeck(AdapterCallback callback) {
         mRecyclerAdapterCallback = callback;
-        Log.d("tag","registerForCallbeck");
+        Log.d("tag", "registerForCallbeck");
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

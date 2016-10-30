@@ -50,10 +50,10 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
         if (v.getId() == R.id.bot_btn_repeat) {
 
         } else if (v.getId() == R.id.bot_btn_main) {
-            if (player.isPlaying()){
+            if (player.isPlaying()) {
                 player.pause();
-                btn_main_btn.setImageResource(R.drawable.ic_play_white_72dp);
-            }else {
+                btn_main_btn.setImageResource(R.drawable.ic_play_white_60dp);
+            } else {
                 player.start();
                 btn_main_btn.setImageResource(R.drawable.ic_pause_white_48dp);
             }

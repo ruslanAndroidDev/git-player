@@ -3,7 +3,6 @@ package com.example.pk.drawproject;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.IOException;
 
@@ -14,10 +13,9 @@ public class MediaPlayerHelper {
     static MediaPlayer player;
 
     public static MediaPlayer getPlayer() {
-        if (player!=null) {
+        if (player != null) {
             return player;
-        }
-        else {
+        } else {
             player = new MediaPlayer();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             return player;
@@ -26,19 +24,16 @@ public class MediaPlayerHelper {
 
 
     public MediaPlayerHelper() {
-        Log.d("tag", "MediaPlayer constructor");
         player = new MediaPlayer();
         player.setAudioStreamType(AudioManager.STREAM_MUSIC);
     }
 
     public void playSound(String url) {
-        Log.d("tag", "MediaPlayer - playSound");
         AudioPlayerTask task = new AudioPlayerTask();
         task.execute(url);
     }
 
     public void reset() {
-        Log.d("tag", "MediaPlayer - reset");
         player.reset();
     }
 

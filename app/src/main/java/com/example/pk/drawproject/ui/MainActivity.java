@@ -2,9 +2,12 @@ package com.example.pk.drawproject.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -16,8 +19,9 @@ import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    ViewPager viewPager;
+    MusicFragment musicFragment;
     ImageButton searchButton;
+    FrameLayout container;
     private String[] scope = new String[]{VKScope.AUDIO};
 
     @Override
@@ -34,8 +38,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showUI() {
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
+        musicFragment = new MusicFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.container, musicFragment);
+        ft.commit();
     }
 
     @Override

@@ -1,17 +1,14 @@
-package com.example.pk.drawproject.ui;
+package com.example.pk.drawproject.musicFragment.recyclerView;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.pk.drawproject.MediaPlayerHelper;
 import com.example.pk.drawproject.R;
 import com.example.pk.drawproject.model.VkAudio;
-import com.example.pk.drawproject.myInterfaces.AdapterCallback;
 
 import java.util.ArrayList;
 
@@ -21,20 +18,15 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
     ArrayList<VkAudio> audiodata;
     Context context;
-    int audioposition;
-    MediaPlayerHelper player;
-    private static AdapterCallback mRecyclerAdapterCallback;
+    private RecyclerItemClickListener recyclerItemClickListener;
 
-
-    public RecyclerViewAdapter(ArrayList<VkAudio> audiodata, Context context, AdapterCallback callback) {
-        this.context = context;
-        this.audiodata = audiodata;
-        mRecyclerAdapterCallback = callback;
+    public void setRecyclerItemClickListener(RecyclerItemClickListener recyclerItemClickListener) {
+        this.recyclerItemClickListener = recyclerItemClickListener;
     }
 
-    public static void registerForCallbeck(AdapterCallback callback) {
-        mRecyclerAdapterCallback = callback;
-        Log.d("tag", "registerForCallbeck");
+    public RecyclerViewAdapter(ArrayList<VkAudio> audiodata, Context context) {
+        this.context = context;
+        this.audiodata = audiodata;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -55,15 +47,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View v) {
-            audioposition = getAdapterPosition();
-            mRecyclerAdapterCallback.onRecyclerItemClick(audioposition);
-            if (player != null) {
-                player.reset();
-                player.playSound(audiodata.get(audioposition).getUrl());
-            } else {
-                player = new MediaPlayerHelper();
-                player.playSound(audiodata.get(audioposition).getUrl());
-            }
+            recyclerItemClickListener.onItemClickListener(getAdapterPosition());
         }
 
     }

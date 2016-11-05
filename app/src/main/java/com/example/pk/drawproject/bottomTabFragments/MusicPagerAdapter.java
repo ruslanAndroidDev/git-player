@@ -1,11 +1,8 @@
-package com.example.pk.drawproject.ui;
+package com.example.pk.drawproject.bottomTabFragments;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-
-import com.example.pk.drawproject.bottomTabFragments.PlayerFragment;
-import com.example.pk.drawproject.bottomTabFragments.SoundFragment;
 
 /**
  * Created by pk on 28.10.2016.
@@ -29,5 +26,4 @@ public class MusicPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return 2;
     }
-
 }

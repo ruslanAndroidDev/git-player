@@ -1,42 +1,39 @@
-package com.example.pk.drawproject.ui;
+package com.example.pk.drawproject.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.util.Log;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.example.pk.drawproject.R;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
-import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    MusicFragment musicFragment;
+public class MainActivity extends AppCompatActivity implements MainActivityInterface {
     ImageButton searchButton;
-    private String[] scope = new String[]{VKScope.AUDIO};
+    MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         searchButton = (ImageButton) findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(this);
-        if (VKSdk.isLoggedIn()) {
-            showUI();
-        } else {
-            VKSdk.login(this, scope);
-        }
+        Log.d("tag","OnCreateMainActivity");
+
+        presenter = new MainPresenter(this);
+        presenter.isLoggedIn();
     }
 
-    private void showUI() {
-        musicFragment = new MusicFragment();
+    @Override
+    public void setFragment(Fragment fragment) {
+        // musicFragment = new MusicFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.container, musicFragment);
+        ft.add(R.id.container, fragment);
         ft.commit();
     }
 
@@ -45,21 +42,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
-                showUI();
+                presenter.setFragment();
             }
 
             @Override
             public void onError(VKError error) {
 // Произошла ошибка авторизации (например, пользователь запретил авторизацию)
-                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
             }
         })) {
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 }

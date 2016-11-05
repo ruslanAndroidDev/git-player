@@ -7,5 +7,5 @@ import com.example.pk.drawproject.musicFragment.recyclerView.RecyclerViewAdapter
  */
 public interface MusicFragmentInterface {
     void setAdapter(RecyclerViewAdapter adapter);
-    void setPlayerBar(int position);
+    void showPlayerBar(int position);
 }

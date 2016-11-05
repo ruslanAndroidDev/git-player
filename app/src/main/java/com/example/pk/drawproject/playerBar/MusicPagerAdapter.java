@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.bottomTabFragments;
+package com.example.pk.drawproject.playerBar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

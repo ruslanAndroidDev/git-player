@@ -13,11 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.pk.drawproject.R;
-import com.example.pk.drawproject.bottomTabFragments.MusicPagerAdapter;
-import com.example.pk.drawproject.model.VkAudio;
+import com.example.pk.drawproject.playerBar.MusicPagerAdapter;
 import com.example.pk.drawproject.musicFragment.recyclerView.RecyclerViewAdapter;
-
-import java.util.ArrayList;
 
 /**
  * Created by pk on 28.10.2016.
@@ -39,7 +36,7 @@ public class MusicFragment extends Fragment implements MusicFragmentInterface {
         musicBar = (ViewPager) v.findViewById(R.id.musicBar);
 
         musicPresenter = new MusicPresenter(this);
-        musicPresenter.vkGetAudio();
+        musicPresenter.sendVkRequest();
         return v;
     }
 
@@ -50,7 +47,7 @@ public class MusicFragment extends Fragment implements MusicFragmentInterface {
     }
 
     @Override
-    public void setPlayerBar(int position) {
+    public void showPlayerBar(int position) {
         musicBar.setAdapter(new MusicPagerAdapter(getFragmentManager(),position));
     }
 }

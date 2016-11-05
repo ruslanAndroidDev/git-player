@@ -34,9 +34,9 @@ public class MusicPresenter implements MusicPresenterInterface, RecyclerItemClic
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
     }
 
-
+    // get list with audios vk
     @Override
-    public void vkGetAudio() {
+    public void sendVkRequest() {
         final VKRequest request = VKApi.audio().get();
         request.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
@@ -73,13 +73,13 @@ public class MusicPresenter implements MusicPresenterInterface, RecyclerItemClic
             }
             mediaPlayer.start();
         }
-        setPlayerBar(position);
+        showBar(position);
         prevPosition=position;
     }
 
     @Override
-    public void setPlayerBar(int position) {
-        fragment.setPlayerBar(position);
+    public void showBar(int position) {
+        fragment.showPlayerBar(position);
     }
 
     @Override

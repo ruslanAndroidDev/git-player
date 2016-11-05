@@ -10,12 +10,12 @@ import com.vk.sdk.VKSdk;
  * Created by pk on 05.11.2016.
  */
 public class MainPresenter implements MainPresenterInterface {
-    MainActivity mainView;
+    MainView mainView;
     MusicFragment musicFragment;
 
     private String[] scope = new String[]{VKScope.AUDIO};
 
-    public MainPresenter(MainActivity mainView) {
+    public MainPresenter(MainView mainView) {
         this.mainView = mainView;
         Log.d("tag", "MainPresenterConstructor");
     }

@@ -14,7 +14,7 @@ import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
 
-public class MainActivity extends AppCompatActivity implements MainActivityInterface {
+public class MainView extends AppCompatActivity implements MainViewInterface {
     ImageButton searchButton;
     MainPresenter presenter;
 

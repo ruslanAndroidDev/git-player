@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.bottomTabFragments;
+package com.example.pk.drawproject.playerBar;
 
 import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.pk.drawproject.R;
-import com.example.pk.drawproject.musicFragment.MusicFragment;
 
 /**
  * Created by pk on 28.10.2016.

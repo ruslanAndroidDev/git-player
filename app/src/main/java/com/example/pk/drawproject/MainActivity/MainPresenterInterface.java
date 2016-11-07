@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.main;
+package com.example.pk.drawproject.MainActivity;
 
 /**
  * Created by pk on 05.11.2016.

@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.main;
+package com.example.pk.drawproject.MainActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +31,6 @@ public class MainView extends AppCompatActivity implements MainViewInterface {
 
     @Override
     public void setFragment(Fragment fragment) {
-        // musicFragment = new MusicFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.container, fragment);
         ft.commit();

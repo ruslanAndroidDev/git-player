@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.main;
+package com.example.pk.drawproject.MainActivity;
 
 import android.support.v4.app.Fragment;
 

@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.playerBar;
+package com.example.pk.drawproject.view.playerBar;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

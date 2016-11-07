@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.playerBar;
+package com.example.pk.drawproject.view.playerBar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,17 +8,15 @@ import android.support.v4.app.FragmentPagerAdapter;
  * Created by pk on 28.10.2016.
  */
 public class MusicPagerAdapter extends FragmentPagerAdapter {
-    int music_position;
 
-    public MusicPagerAdapter(FragmentManager fm, int position) {
+    public MusicPagerAdapter(FragmentManager fm) {
         super(fm);
-        this.music_position = position;
     }
 
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new SoundFragment(music_position);
+            return new SoundFragment();
         } else return new PlayerFragment();
     }
 

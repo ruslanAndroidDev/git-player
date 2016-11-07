@@ -2,18 +2,16 @@ package com.example.pk.drawproject.musicFragment;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
+import android.util.Log;
 
+import com.example.pk.drawproject.model.Model;
+import com.example.pk.drawproject.model.ModelInterface;
 import com.example.pk.drawproject.model.VkAudio;
 import com.example.pk.drawproject.musicFragment.recyclerView.RecyclerItemClickListener;
 import com.example.pk.drawproject.musicFragment.recyclerView.RecyclerViewAdapter;
-import com.vk.sdk.api.VKApi;
-import com.vk.sdk.api.VKRequest;
-import com.vk.sdk.api.VKResponse;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.pk.drawproject.view.playerBar.PlayerBarInterface;
+import com.example.pk.drawproject.view.playerBar.PlayerBarPresenter;
+import com.example.pk.drawproject.view.playerBar.SoundFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,10 +21,10 @@ import java.util.ArrayList;
  */
 public class MusicPresenter implements MusicPresenterInterface, RecyclerItemClickListener {
     MusicFragment fragment;
-    RecyclerViewAdapter adapter;
-    MediaPlayer mediaPlayer;
+    public static MediaPlayer mediaPlayer;
     int prevPosition;
     ArrayList<VkAudio> data;
+    static PlayerBarInterface playerBarInterface;
 
     public MusicPresenter(MusicFragment fragment) {
         this.fragment = fragment;
@@ -34,85 +32,69 @@ public class MusicPresenter implements MusicPresenterInterface, RecyclerItemClic
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
     }
 
-    // get list with audios vk
+    public static void registerPlayerBar(SoundFragment fragment) {
+        playerBarInterface = fragment;
+    }
+
     @Override
-    public void sendVkRequest() {
-        final VKRequest request = VKApi.audio().get();
-        request.executeWithListener(new VKRequest.VKRequestListener() {
+    public void loadMusicItems() {
+        Model model = new Model(this);
+        model.getVkSoundListWithListener(new ModelInterface.DataLoadedCallBack() {
             @Override
-            public void onComplete(VKResponse response) {
-                super.onComplete(response);
-                ParseTask parse = new ParseTask();
-                parse.execute(response.json);
+            public void onDataLoadSucces(ArrayList<VkAudio> vkAudios) {
+                data = vkAudios;
+                setAdapter(vkAudios);
             }
         });
     }
 
     @Override
     public void setAdapter(ArrayList<VkAudio> vkAudios) {
-        adapter = new RecyclerViewAdapter(vkAudios, fragment.getContext());
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(vkAudios, fragment.getContext());
         adapter.setRecyclerItemClickListener(this);
         fragment.setAdapter(adapter);
     }
 
     @Override
-    public void playSound(int position) {
+    public void playSound(final int position) {
+        showBar(position);
+        Log.d("tag", "showBar");
         if (prevPosition == position) {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
+                playerBarInterface.setMainBtnOnPlay();
             } else {
                 mediaPlayer.start();
+                playerBarInterface.setMainBtnOnPause();
             }
         } else {
-            try {
-                mediaPlayer.reset();
-                mediaPlayer.setDataSource(data.get(position).getUrl());
-                mediaPlayer.prepare();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            mediaPlayer.start();
+            mediaPlayer.reset();
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        mediaPlayer.setDataSource(data.get(position).getUrl());
+                        mediaPlayer.prepare();
+                        playerBarInterface.setMainBtnOnPause();
+                        mediaPlayer.start();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.start();
+            prevPosition = position;
         }
-        showBar(position);
-        prevPosition=position;
     }
 
     @Override
     public void showBar(int position) {
         fragment.showPlayerBar(position);
+        playerBarInterface.filingField(data.get(position).getTitle(),data.get(position).getArtist());
     }
 
     @Override
     public void onItemClickListener(int position) {
         playSound(position);
-    }
-
-    private class ParseTask extends AsyncTask<JSONObject, Void, ArrayList<VkAudio>> {
-
-        @Override
-        protected ArrayList<VkAudio> doInBackground(JSONObject... params) {
-            return parseJson(params[0]);
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<VkAudio> vkAudios) {
-            setAdapter(vkAudios);
-        }
-
-        private ArrayList<VkAudio> parseJson(JSONObject json) {
-            data = new ArrayList<>();
-            try {
-                JSONObject responce = json.getJSONObject("response");
-                JSONArray items = responce.getJSONArray("items");
-                for (int i = items.length() - 1; i >= 0; i--) {
-                    JSONObject music = items.getJSONObject(i);
-                    VkAudio vkAudio = new VkAudio(music.getString("title"), music.getString("url"), music.getString("artist"), music.getString("duration"));
-                    data.add(0, vkAudio);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return data;
-        }
     }
 }

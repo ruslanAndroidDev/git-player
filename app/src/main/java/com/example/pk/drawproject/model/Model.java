@@ -2,7 +2,6 @@ package com.example.pk.drawproject.model;
 
 import android.os.AsyncTask;
 
-import com.example.pk.drawproject.musicFragment.MusicPresenter;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
@@ -18,12 +17,8 @@ import java.util.ArrayList;
  */
 public class Model implements ModelInterface {
     static ArrayList<VkAudio> data;
-    MusicPresenter musicPresenter;
     DataLoadedCallBack myсallBack;
 
-    public Model(MusicPresenter presenter) {
-        this.musicPresenter = presenter;
-    }
 
     @Override
     public void getVkSoundListWithListener(DataLoadedCallBack callBack) {
@@ -47,7 +42,6 @@ public class Model implements ModelInterface {
             }
         });
     }
-
 
 
     private class ParseTask extends AsyncTask<JSONObject, Void, ArrayList<VkAudio>> {

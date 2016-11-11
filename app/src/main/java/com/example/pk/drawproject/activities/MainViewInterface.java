@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.MainActivity;
+package com.example.pk.drawproject.activities;
 
 import android.support.v4.app.Fragment;
 
@@ -6,5 +6,6 @@ import android.support.v4.app.Fragment;
  * Created by pk on 05.11.2016.
  */
 public interface MainViewInterface {
-    void setFragment(Fragment fragment);
+    void addFragments(Fragment fragment);
+    void showPlayerFragment();
 }

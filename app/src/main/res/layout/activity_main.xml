@@ -1,43 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MainActivity.MainView">
+    tools:context=".ui.activies.MainActivity">
+
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"
         android:background="#0f2384"
         android:title="VkPlayer"
         app:titleTextColor="#FFF">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="VkPlayer"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:text="VkPlayer"
                 android:textColor="#FFF"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
+
             <ImageButton
+                android:id="@+id/searchButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:background="@null"
-                android:id="@+id/searchButton"
                 android:layout_centerVertical="true"
-                android:scaleType="centerCrop"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/ic_search_black_24dp"/>
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_search_black_24dp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
-    <FrameLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:id="@+id/container"></FrameLayout>
+        android:layout_below="@id/toolbar"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/main_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:layout_weight="1"></FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/player_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:layout_weight="7"
+            android:visibility="gone"></FrameLayout>
+
+    </LinearLayout>
 </RelativeLayout>

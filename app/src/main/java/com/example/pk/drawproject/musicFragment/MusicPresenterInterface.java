@@ -11,5 +11,4 @@ public interface MusicPresenterInterface {
     void setAdapter(ArrayList<VkAudio> vkAudios);
     void loadMusicItems();
     void playSound(int position);
-    void showBar(int position);
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public interface ModelInterface {
    void getVkSoundListWithListener(DataLoadedCallBack callBack);
 
+
     interface DataLoadedCallBack {
         void onDataLoadSucces(ArrayList<VkAudio> vkAudios);
 

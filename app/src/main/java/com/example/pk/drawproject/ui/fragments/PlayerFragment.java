@@ -33,7 +33,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
         bot_tab_btn.setOnClickListener(this);
 
         presenter = MainPresenter.getInstance();
-        presenter.tookPlayerFragment(this);
+        presenter.attachPlayerFragment(this);
         return v;
     }
     public void fillingField(String title,String artist){
@@ -43,7 +43,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        presenter.buttonClick();
+        presenter.barButtonClick();
     }
     public void setButtonOnPause(){
         bot_tab_btn.setImageResource(R.drawable.ic_pause_white_48dp);

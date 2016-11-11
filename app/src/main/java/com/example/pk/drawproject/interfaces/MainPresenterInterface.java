@@ -7,17 +7,15 @@ import com.example.pk.drawproject.ui.fragments.PlayerFragment;
  * Created by pk on 05.11.2016.
  */
 public interface MainPresenterInterface {
-    void vkLoggin();
-
-    void isLoggedIn();
+    void login();
 
     void setFragment();
 
-    void tookMainView(MainActivity mainActivity);
+    void attachView(MainActivity mainActivity);
 
-    void tookPlayerFragment(PlayerFragment fragment);
+    void attachPlayerFragment(PlayerFragment fragment);
 
     void showBar(int position);
 
-    void buttonClick();
+    void barButtonClick();
 }

@@ -32,12 +32,12 @@ public class MainPresenter implements MainPresenterInterface {
     }
 
     @Override
-    public void tookMainView(MainActivity mainActivity) {
+    public void attachView(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
     @Override
-    public void tookPlayerFragment(PlayerFragment fragment) {
+    public void attachPlayerFragment(PlayerFragment fragment) {
         this.playerfragment = fragment;
     }
 
@@ -48,7 +48,7 @@ public class MainPresenter implements MainPresenterInterface {
     }
 
     @Override
-    public void buttonClick() {
+    public void barButtonClick() {
         if (MusicPresenter.mediaPlayer.isPlaying()){
             MusicPresenter.mediaPlayer.stop();
             playerfragment.setButtonOnStart();
@@ -59,12 +59,7 @@ public class MainPresenter implements MainPresenterInterface {
     }
 
     @Override
-    public void vkLoggin() {
-        VKSdk.login(mainActivity, scope);
-    }
-
-    @Override
-    public void isLoggedIn() {
+    public void login() {
         if (VKSdk.isLoggedIn()) {
             Log.d("tag", "vkLoggin");
             setFragment();

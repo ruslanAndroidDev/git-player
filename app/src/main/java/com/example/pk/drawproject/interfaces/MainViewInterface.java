@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.activities;
+package com.example.pk.drawproject.interfaces;
 
 import android.support.v4.app.Fragment;
 

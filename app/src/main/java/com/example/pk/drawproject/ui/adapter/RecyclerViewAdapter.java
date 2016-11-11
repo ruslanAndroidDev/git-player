@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.musicFragment.recyclerView;
+package com.example.pk.drawproject.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

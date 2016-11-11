@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.pk.drawproject.R;
-import com.example.pk.drawproject.musicFragment.MusicFragmentInterface;
+import com.example.pk.drawproject.interfaces.MusicFragmentInterface;
 import com.example.pk.drawproject.presenters.MusicPresenter;
-import com.example.pk.drawproject.musicFragment.recyclerView.RecyclerViewAdapter;
+import com.example.pk.drawproject.ui.adapter.RecyclerViewAdapter;
 /**
  * Created by pk on 28.10.2016.
  */

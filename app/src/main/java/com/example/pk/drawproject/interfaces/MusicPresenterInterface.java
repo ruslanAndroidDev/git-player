@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.musicFragment;
+package com.example.pk.drawproject.interfaces;
 
 import com.example.pk.drawproject.model.VkAudio;
 

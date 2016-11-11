@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.activities;
+package com.example.pk.drawproject.interfaces;
 
 import com.example.pk.drawproject.ui.activies.MainActivity;
 import com.example.pk.drawproject.ui.fragments.PlayerFragment;

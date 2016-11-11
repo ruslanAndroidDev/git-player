@@ -4,13 +4,12 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.util.Log;
 
-import com.example.pk.drawproject.musicFragment.MusicPresenterInterface;
-import com.example.pk.drawproject.presenters.MainPresenter;
+import com.example.pk.drawproject.interfaces.MusicPresenterInterface;
 import com.example.pk.drawproject.model.Model;
 import com.example.pk.drawproject.model.ModelInterface;
 import com.example.pk.drawproject.model.VkAudio;
-import com.example.pk.drawproject.musicFragment.recyclerView.RecyclerItemClickListener;
-import com.example.pk.drawproject.musicFragment.recyclerView.RecyclerViewAdapter;
+import com.example.pk.drawproject.ui.adapter.RecyclerItemClickListener;
+import com.example.pk.drawproject.ui.adapter.RecyclerViewAdapter;
 import com.example.pk.drawproject.ui.fragments.MusicFragment;
 
 import java.io.IOException;

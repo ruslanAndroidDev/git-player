@@ -34,19 +34,18 @@ public class PlayerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("tag", "onStartCommand");
         String url = intent.getStringExtra("url");
-        Log.d("tag","url: " + url);
+        Log.d("tag", "url: " + url);
+        mPlayer.reset();
         try {
-            if (mPlayer.isPlaying()){
-                mPlayer.reset();
-            }
             mPlayer.setDataSource(url);
             mPlayer.prepare();
             mPlayer.start();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
-        return super.onStartCommand(intent, flags, startId);
-    }
+    return super.onStartCommand(intent, flags, startId);
+
+}
 
     @Override
     public void onDestroy() {

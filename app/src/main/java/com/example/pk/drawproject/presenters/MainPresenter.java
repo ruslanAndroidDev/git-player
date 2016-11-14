@@ -46,24 +46,17 @@ public class MainPresenter implements MainPresenterInterface {
     @Override
     public void showBar(int position) {
         mainActivity.showPlayerFragment();
-        playerfragment.fillingField(MusicPresenter.data.get(position).getTitle(),MusicPresenter.data.get(position).getArtist());
+        playerfragment.fillingField(MusicPresenter.data.get(position).getTitle(), MusicPresenter.data.get(position).getArtist());
     }
 
     @Override
     public void barButtonClick() {
-        if (MusicPresenter.mediaPlayer.isPlaying()){
-            MusicPresenter.mediaPlayer.stop();
-            playerfragment.setButtonOnStart();
-        }else{
-            MusicPresenter.mediaPlayer.start();
-            playerfragment.setButtonOnPause();
-        }
     }
 
     @Override
     public void destroy() {
         mainActivity.getApplicationContext().stopService(new Intent(mainActivity, PlayerService.class));
-        Log.d("tag","destroy");
+        Log.d("tag", "destroy");
     }
 
     @Override

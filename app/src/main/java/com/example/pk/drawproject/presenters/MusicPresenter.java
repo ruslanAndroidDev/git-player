@@ -1,10 +1,6 @@
 package com.example.pk.drawproject.presenters;
 
-import android.app.Application;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.util.Log;
 
 import com.example.pk.drawproject.PlayerService;
 import com.example.pk.drawproject.interfaces.MusicPresenterInterface;
@@ -15,7 +11,6 @@ import com.example.pk.drawproject.ui.adapter.RecyclerItemClickListener;
 import com.example.pk.drawproject.ui.adapter.RecyclerViewAdapter;
 import com.example.pk.drawproject.ui.fragments.MusicFragment;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -23,14 +18,10 @@ import java.util.ArrayList;
  */
 public class MusicPresenter implements MusicPresenterInterface, RecyclerItemClickListener {
     MusicFragment fragment;
-    public static MediaPlayer mediaPlayer;
-    int prevPosition;
     public static ArrayList<VkAudio> data;
 
     public MusicPresenter(MusicFragment fragment) {
         this.fragment = fragment;
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
     }
 
     @Override
@@ -53,41 +44,10 @@ public class MusicPresenter implements MusicPresenterInterface, RecyclerItemClic
     }
 
     @Override
-    public void playSound(final int position) {
-        MainPresenter presenter = MainPresenter.getInstance();
-        presenter.showBar(position);
-        Log.d("tag", "showBar");
-        if (prevPosition == position) {
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.pause();
-            } else {
-                mediaPlayer.start();
-            }
-        } else {
-            mediaPlayer.reset();
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Log.d("tag", "thread.run");
-                        mediaPlayer.setDataSource(data.get(position).getUrl());
-                        mediaPlayer.prepare();
-                        mediaPlayer.start();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            thread.start();
-            prevPosition = position;
-        }
-    }
-
-    @Override
     public void onItemClickListener(int position) {
         //playSound(position);
-        Intent start = new Intent(fragment.getContext(),PlayerService.class);
-        start.putExtra("url",data.get(position).getUrl());
+        Intent start = new Intent(fragment.getContext(), PlayerService.class);
+        start.putExtra("url", data.get(position).getUrl());
         fragment.getContext().startService(start);
     }
 }

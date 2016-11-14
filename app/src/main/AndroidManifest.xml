@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:name=".Application"
         android:theme="@style/AppTheme">
+        <service
+            android:enabled="true"
+            android:name=".PlayerService"
+            android:process=":newproc">
+        </service>
         <activity android:name=".ui.activies.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

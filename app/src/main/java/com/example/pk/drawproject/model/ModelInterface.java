@@ -11,7 +11,5 @@ public interface ModelInterface {
 
     interface DataLoadedCallBack {
         void onDataLoadSucces(ArrayList<VkAudio> vkAudios);
-
-       // void onDataLoadError();
     }
 }

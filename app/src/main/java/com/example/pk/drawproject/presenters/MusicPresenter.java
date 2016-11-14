@@ -1,9 +1,12 @@
 package com.example.pk.drawproject.presenters;
 
+import android.app.Application;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.util.Log;
 
+import com.example.pk.drawproject.PlayerService;
 import com.example.pk.drawproject.interfaces.MusicPresenterInterface;
 import com.example.pk.drawproject.model.Model;
 import com.example.pk.drawproject.model.ModelInterface;
@@ -82,6 +85,9 @@ public class MusicPresenter implements MusicPresenterInterface, RecyclerItemClic
 
     @Override
     public void onItemClickListener(int position) {
-        playSound(position);
+        //playSound(position);
+        Intent start = new Intent(fragment.getContext(),PlayerService.class);
+        start.putExtra("url",data.get(position).getUrl());
+        fragment.getContext().startService(start);
     }
 }

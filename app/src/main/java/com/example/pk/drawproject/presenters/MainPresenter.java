@@ -1,7 +1,9 @@
 package com.example.pk.drawproject.presenters;
 
+import android.content.Intent;
 import android.util.Log;
 
+import com.example.pk.drawproject.PlayerService;
 import com.example.pk.drawproject.interfaces.MainPresenterInterface;
 import com.example.pk.drawproject.ui.activies.MainActivity;
 import com.example.pk.drawproject.ui.fragments.MusicFragment;
@@ -56,6 +58,12 @@ public class MainPresenter implements MainPresenterInterface {
             MusicPresenter.mediaPlayer.start();
             playerfragment.setButtonOnPause();
         }
+    }
+
+    @Override
+    public void destroy() {
+        mainActivity.getApplicationContext().stopService(new Intent(mainActivity, PlayerService.class));
+        Log.d("tag","destroy");
     }
 
     @Override

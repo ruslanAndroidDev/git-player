@@ -18,4 +18,6 @@ public interface MainPresenterInterface {
     void showBar(int position);
 
     void barButtonClick();
+
+    void destroy();
 }

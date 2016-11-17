@@ -1,7 +1,5 @@
 package com.example.pk.drawproject.main;
 
-import com.example.pk.drawproject.ui.fragments.PlayerFragment;
-
 /**
  * Created by pk on 05.11.2016.
  */

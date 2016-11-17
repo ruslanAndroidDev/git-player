@@ -17,7 +17,7 @@
             android:name=".PlayerService"
             android:process=":newproc">
         </service>
-        <activity android:name=".ui.activies.MainActivity">
+        <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.pk.drawproject.presenters.MainPresenter;
+import com.example.pk.drawproject.main.MainPresenterImpl;
 import com.example.pk.drawproject.R;
 
 /**
@@ -20,7 +20,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
     TextView titleTv;
     TextView artistTv;
     ImageButton bot_tab_btn;
-    MainPresenter presenter;
+    MainPresenterImpl presenter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,8 +32,8 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
         bot_tab_btn = (ImageButton)v.findViewById(R.id.bot_tab_btn);
         bot_tab_btn.setOnClickListener(this);
 
-        presenter = MainPresenter.getInstance();
-        presenter.attachPlayerFragment(this);
+      //  presenter = new MainPresenterImpl();
+      //  presenter.attachPlayerFragment(this);
         return v;
     }
     public void fillingField(String title,String artist){

@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.ui.adapter;
+package com.example.pk.drawproject.musicFragment.recycler;
 
 /**
  * Created by pk on 05.11.2016.

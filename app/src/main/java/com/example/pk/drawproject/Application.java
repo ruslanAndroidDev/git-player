@@ -2,7 +2,7 @@ package com.example.pk.drawproject;
 
 import android.content.Intent;
 
-import com.example.pk.drawproject.ui.activies.MainActivity;
+import com.example.pk.drawproject.main.MainActivity;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKAccessTokenTracker;
 import com.vk.sdk.VKSdk;

@@ -9,15 +9,13 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.pk.drawproject.model.VkAudio;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
 /**
  * Created by pk on 12.11.2016.
  */
-public class PlayerService extends Service implements MediaPlayer.OnPreparedListener,MediaPlayer.OnCompletionListener {
+public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
     private int currentSoundPosition;
     MediaPlayer mPlayer;
     private final IBinder binder = new PlayerBinder();

@@ -11,6 +11,4 @@ public interface MainPresenter {
     void showBar(int position);
 
     void barButtonClick();
-
-    void onDestroy();
 }

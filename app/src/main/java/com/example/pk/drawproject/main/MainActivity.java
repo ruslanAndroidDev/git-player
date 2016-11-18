@@ -43,11 +43,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void destroyServise() {
-        stopService(new Intent(this, PlayerService.class));
-    }
-
-    @Override
     public void login() {
         VKSdk.login(this, scope);
     }
@@ -77,12 +72,5 @@ public class MainActivity extends AppCompatActivity implements MainView {
         FragmentTransaction playertransaction = getSupportFragmentManager().beginTransaction();
        // playertransaction.add(R.id.player_container, new PlayerFragment());
         playertransaction.commit();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        presenter.onDestroy();
-
     }
 }

@@ -17,6 +17,7 @@ import java.util.ArrayList;
  */
 public class Model implements ModelInterface {
     static ArrayList<VkAudio> data;
+    static ArrayList<String> songUrl;
     DataLoadedCallBack myсallBack;
 
 
@@ -28,6 +29,21 @@ public class Model implements ModelInterface {
         } else {
             sendVkReqest();
         }
+    }
+
+    @Override
+    public void getSongWithListener(final SongLoadedCallBack songLoadedCallBack) {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                songUrl = new ArrayList<>();
+                for (int i=0;i<data.size();i++){
+                    songUrl.add(data.get(i).getUrl());
+                }
+                songLoadedCallBack.onSongLoadSucces(songUrl);
+            }
+        });
+        t.start();
     }
 
 

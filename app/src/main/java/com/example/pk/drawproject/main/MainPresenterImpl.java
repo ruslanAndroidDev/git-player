@@ -27,11 +27,6 @@ public class MainPresenterImpl implements MainPresenter {
     }
 
     @Override
-    public void onDestroy() {
-        mainView.destroyServise();
-    }
-
-    @Override
     public void login() {
         if (VKSdk.isLoggedIn()) {
             Log.d("tag", "vkLoggin");

@@ -33,15 +33,8 @@ public class MusicFragment extends Fragment implements MusicFragmentView {
 
     PlayerService playerService;
 
+    ServiceConnection connection;
     private boolean bound = false;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Intent intent = new Intent(getContext(), PlayerService.class);
-        getContext().bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        Log.d("tag", "OnAttach");
-    }
 
     @Override
     public void onDetach() {
@@ -50,21 +43,17 @@ public class MusicFragment extends Fragment implements MusicFragmentView {
         Log.d("tag", "onDetach");
     }
 
-    private ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            PlayerService.PlayerBinder playerBinder = (PlayerService.PlayerBinder) service;
-            playerService = playerBinder.getPlayer();
-            bound = true;
-            Log.d("tag", "serviceConnected");
-        }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setServiceConnect();
+    }
 
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            bound = false;
-            Log.d("tag", "onServiceDisconnected");
-        }
-    };
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        musicPresenterImpl = new MusicPresenterImpl(this);
+    }
 
     @Nullable
     @Override
@@ -72,8 +61,6 @@ public class MusicFragment extends Fragment implements MusicFragmentView {
         View v = inflater.inflate(R.layout.music_fragment, container, false);
         Log.d("tag", "onCreateView,MusicFragment");
         music_Recycler_View = (RecyclerView) v.findViewById(R.id.musicRecyclerView);
-
-        musicPresenterImpl = new MusicPresenterImpl(this);
         musicPresenterImpl.loadMusicItems();
         return v;
     }
@@ -89,12 +76,13 @@ public class MusicFragment extends Fragment implements MusicFragmentView {
                 musicPresenterImpl.itemClick(position);
             }
         });
+        musicPresenterImpl.loadServiceSongList();
     }
 
     @Override
-    public void playSound(String url) {
+    public void playSound(int songPosition) {
         try {
-            playerService.playSounds(url);
+            playerService.playSounds(songPosition);
         } catch (IOException e) {
             Log.d("tag", "AAAAAAAAAAAA  ERROR syka");
         }
@@ -107,5 +95,31 @@ public class MusicFragment extends Fragment implements MusicFragmentView {
         } else {
             playerService.resumePlaying();
         }
+    }
+
+    @Override
+    public void setServiceConnect() {
+        connection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                PlayerService.PlayerBinder playerBinder = (PlayerService.PlayerBinder) service;
+                playerService = playerBinder.getPlayer();
+                bound = true;
+                Log.d("tag", "serviceConnected");
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                bound = false;
+                Log.d("tag", "onServiceDisconnected");
+            }
+        };
+        Intent intent = new Intent(getContext(), PlayerService.class);
+        getContext().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    public void setServiceList(ArrayList<String> songs) {
+        playerService.setSong(songs);
     }
 }

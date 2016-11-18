@@ -8,8 +8,13 @@ import java.util.ArrayList;
 public interface ModelInterface {
    void getVkSoundListWithListener(DataLoadedCallBack callBack);
 
+    void getSongWithListener(SongLoadedCallBack songLoadedCallBack);
+
 
     interface DataLoadedCallBack {
         void onDataLoadSucces(ArrayList<VkAudio> vkAudios);
+    }
+    interface SongLoadedCallBack {
+        void onSongLoadSucces(ArrayList<String> url);
     }
 }

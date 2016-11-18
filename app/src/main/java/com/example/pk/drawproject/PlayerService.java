@@ -9,19 +9,37 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.pk.drawproject.model.VkAudio;
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by pk on 12.11.2016.
  */
-public class PlayerService extends Service implements MediaPlayer.OnPreparedListener {
+public class PlayerService extends Service implements MediaPlayer.OnPreparedListener,MediaPlayer.OnCompletionListener {
     private int currentSoundPosition;
     MediaPlayer mPlayer;
     private final IBinder binder = new PlayerBinder();
+    private ArrayList<String> song;
+
+    public void setSong(ArrayList<String> song) {
+        this.song = song;
+    }
 
     @Override
     public void onPrepared(MediaPlayer mp) {
         mPlayer.start();
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        currentSoundPosition++;
+        try {
+            playSounds(currentSoundPosition);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public class PlayerBinder extends Binder {
@@ -41,14 +59,16 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         mPlayer = new MediaPlayer();
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mPlayer.setOnPreparedListener(this);
+        mPlayer.setOnCompletionListener(this);
     }
 
-    public void playSounds(String url) throws IOException {
-        //currentSoundPosition = position;
+    public void playSounds(int position) throws IOException {
+        currentSoundPosition = position;
         if (mPlayer == null) {
             createPlayer();
         }
-        mPlayer.setDataSource(url);
+        mPlayer.reset();
+        mPlayer.setDataSource(song.get(position));
         mPlayer.prepareAsync();
     }
 

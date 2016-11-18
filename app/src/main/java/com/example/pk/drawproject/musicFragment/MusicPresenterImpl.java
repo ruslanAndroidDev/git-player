@@ -13,6 +13,8 @@ public class MusicPresenterImpl implements MusicPresenter {
     MusicFragmentView musicView;
     public static ArrayList<VkAudio> data;
 
+    private int previousClick = -1;
+
     public MusicPresenterImpl(MusicFragmentView musicView) {
         this.musicView = musicView;
     }
@@ -31,12 +33,20 @@ public class MusicPresenterImpl implements MusicPresenter {
 
     @Override
     public void itemClick(int position) {
-        musicView.playSound(data.get(position).getUrl());
+        if (previousClick == position) {
+            musicView.clickOnTheSameItem();
+        } else if (previousClick == -1) {
+            previousClick = position;
+            musicView.playSound(data.get(position).getUrl());
+        }else{
+            musicView.playSound(data.get(position).getUrl());
+            previousClick = position;
+        }
     }
 
-    @Override
-    public void setAdapter(ArrayList<VkAudio> vkAudios) {
-        musicView.setAdapter(vkAudios);
-    }
+        @Override
+        public void setAdapter (ArrayList < VkAudio > vkAudios) {
+            musicView.setAdapter(vkAudios);
+        }
 
-}
+    }

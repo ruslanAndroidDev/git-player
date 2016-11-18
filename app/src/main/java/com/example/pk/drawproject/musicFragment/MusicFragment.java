@@ -1,7 +1,11 @@
 package com.example.pk.drawproject.musicFragment;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +21,7 @@ import com.example.pk.drawproject.model.VkAudio;
 import com.example.pk.drawproject.musicFragment.recycler.RecyclerItemClickListener;
 import com.example.pk.drawproject.musicFragment.recycler.RecyclerViewAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -26,6 +31,40 @@ public class MusicFragment extends Fragment implements MusicFragmentView {
     RecyclerView music_Recycler_View;
     MusicPresenterImpl musicPresenterImpl;
 
+    PlayerService playerService;
+
+    private boolean bound = false;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Intent intent = new Intent(getContext(), PlayerService.class);
+        getContext().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        Log.d("tag", "OnAttach");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        getContext().unbindService(connection);
+        Log.d("tag", "onDetach");
+    }
+
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            PlayerService.PlayerBinder playerBinder = (PlayerService.PlayerBinder) service;
+            playerService = playerBinder.getPlayer();
+            bound = true;
+            Log.d("tag", "serviceConnected");
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            bound = false;
+            Log.d("tag", "onServiceDisconnected");
+        }
+    };
 
     @Nullable
     @Override
@@ -54,8 +93,19 @@ public class MusicFragment extends Fragment implements MusicFragmentView {
 
     @Override
     public void playSound(String url) {
-        Intent intent = new Intent(getContext(), PlayerService.class);
-        intent.putExtra("url",url);
-        getContext().startService(intent);
+        try {
+            playerService.playSounds(url);
+        } catch (IOException e) {
+            Log.d("tag", "AAAAAAAAAAAA  ERROR syka");
+        }
+    }
+
+    @Override
+    public void clickOnTheSameItem() {
+        if (playerService.isPlaying()) {
+            playerService.pause();
+        } else {
+            playerService.resumePlaying();
+        }
     }
 }

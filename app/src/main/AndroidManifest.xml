@@ -14,8 +14,7 @@
         android:theme="@style/AppTheme">
         <service
             android:enabled="true"
-            android:name=".PlayerService"
-            android:process=":newproc">
+            android:name=".PlayerService">
         </service>
         <activity android:name=".main.MainActivity">
             <intent-filter>

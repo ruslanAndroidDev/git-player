@@ -14,7 +14,6 @@ public class MusicPresenterImpl implements MusicPresenter {
     public static ArrayList<VkAudio> data;
 
     Model model;
-    private int previousClick = -1;
 
     public MusicPresenterImpl(MusicFragmentView musicView) {
         this.musicView = musicView;
@@ -22,7 +21,7 @@ public class MusicPresenterImpl implements MusicPresenter {
 
     @Override
     public void loadMusicItems() {
-       model = new Model();
+        model = new Model();
         model.getVkSoundListWithListener(new ModelInterface.DataLoadedCallBack() {
             @Override
             public void onDataLoadSucces(ArrayList<VkAudio> vkAudios) {
@@ -33,25 +32,18 @@ public class MusicPresenterImpl implements MusicPresenter {
     }
 
     @Override
-    public void itemClick(int position) {
-        if (previousClick == position) {
-            musicView.clickOnTheSameItem();
-        } else if (previousClick == -1) {
-            previousClick = position;
-            musicView.playSound(position);
-        } else {
-            musicView.playSound(position);
-            previousClick = position;
-        }
-    }
-
-    public void loadServiceSongList() {
+    public void loadMusicUrl() {
         model.getSongWithListener(new ModelInterface.SongLoadedCallBack() {
             @Override
             public void onSongLoadSucces(ArrayList<String> url) {
                 musicView.setServiceList(url);
             }
         });
+    }
+
+    @Override
+    public void itemClick(int position) {
+        musicView.playSound(position);
     }
 
     @Override

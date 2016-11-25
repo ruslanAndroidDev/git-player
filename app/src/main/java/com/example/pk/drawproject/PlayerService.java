@@ -36,7 +36,11 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     public static final String PLAY_NEXT = "ua.vkplayer.PLAY_NEXT";
     public static final String PLAY_PREVOIUS = "ua.vkplayer.PLAY_PREVOIUS";
     public static final String ADD_PLAYLIST = "ua.vkplayer.ADD_PLAYLIST";
+    public static final String CLOSE_SERVICE = "ua.vkplayer.CLOSE_SERVICE";
     public final int CODE_PAUSE = 1;
+    public final int CODE_NEXT = 2;
+    public final int CODE_PREVIOUS = 3;
+    public final int CODE_CLOSE = 4;
 
 
     public void setSong(ArrayList<String> song) {
@@ -50,8 +54,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        ++currentSoundPosition;
-        playSounds(currentSoundPosition);
+        playSounds(++currentSoundPosition);
     }
 
     @Nullable
@@ -86,6 +89,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("tag", "onStartCommand");
         String flag = intent.getAction();
+        Log.d("tag", "flag" + flag);
         if (flag.equals(PAUSE))
             mPlayer.pause();
         if (flag.equals(RESUME))
@@ -103,6 +107,11 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         if (flag.equals(ADD_PLAYLIST)) {
             setSong(intent.getStringArrayListExtra("list"));
         }
+        if (flag.equals(CLOSE_SERVICE)) {
+            mPlayer.stop();
+            mPlayer.reset();
+            stopSelf();
+        }
         return START_NOT_STICKY;
     }
 
@@ -113,15 +122,29 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(intent1);
-//        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews = new RemoteViews(getPackageName(), R.layout.notification);
 
         Intent pauseIntent = new Intent(getApplicationContext(), PlayerService.class);
         pauseIntent.setAction(PlayerService.PAUSE);
 
+        Intent nextIntent = new Intent(getApplicationContext(), PlayerService.class);
+        nextIntent.setAction(PlayerService.PLAY_NEXT);
+
+        Intent previousIntent = new Intent(getApplicationContext(), PlayerService.class);
+        previousIntent.setAction(PlayerService.PLAY_PREVOIUS);
+
+        Intent closeIntent = new Intent(getApplicationContext(), PlayerService.class);
+        closeIntent.setAction(CLOSE_SERVICE);
+
         PendingIntent pause = PendingIntent.getService(this, CODE_PAUSE, pauseIntent, 0);
+        PendingIntent next = PendingIntent.getService(this, CODE_NEXT, nextIntent, 0);
+        PendingIntent previous = PendingIntent.getService(this, CODE_PREVIOUS, previousIntent, 0);
+        PendingIntent close = PendingIntent.getService(this, CODE_CLOSE, closeIntent, 0);
 
         remoteViews.setOnClickPendingIntent(R.id.notif_pause, pause);
+        remoteViews.setOnClickPendingIntent(R.id.notif_next, next);
+        remoteViews.setOnClickPendingIntent(R.id.notif_previous, previous);
+        remoteViews.setOnClickPendingIntent(R.id.notif_close, close);
 
         builder = new Notification.Builder(this)
                 .setSmallIcon(R.drawable.music)

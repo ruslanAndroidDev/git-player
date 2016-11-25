@@ -50,7 +50,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/ic_previous_white_48dp" />
+                android:src="@drawable/ic_previous_white_48dp"
+                android:id="@+id/notif_previous"/>
 
             <ImageView
                 android:layout_width="match_parent"
@@ -63,7 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/ic_next_white_48dp" />
+                android:src="@drawable/ic_next_white_48dp"
+                android:id="@+id/notif_next"/>
         </LinearLayout>
 
         <ImageView
@@ -71,6 +73,7 @@
             android:layout_height="30dp"
             android:layout_margin="5dp"
             android:src="@drawable/ic_close"
+            android:id="@+id/notif_close"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 

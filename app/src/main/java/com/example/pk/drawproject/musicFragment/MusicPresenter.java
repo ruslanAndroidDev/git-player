@@ -10,6 +10,5 @@ import java.util.ArrayList;
 public interface MusicPresenter {
     void setAdapter(ArrayList<VkAudio> vkAudios);
     void loadMusicItems();
-    void loadMusicUrl();
     void itemClick(int position);
 }

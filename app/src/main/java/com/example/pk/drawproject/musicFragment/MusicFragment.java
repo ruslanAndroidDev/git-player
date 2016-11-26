@@ -59,7 +59,6 @@ public class MusicFragment extends Fragment implements MusicFragmentView {
         music_Recycler_View.setLayoutManager(new LinearLayoutManager(getContext()));
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(vkAudios, getContext());
         music_Recycler_View.setAdapter(adapter);
-        musicPresenterImpl.loadMusicUrl();
         adapter.setRecyclerItemClickListener(new RecyclerItemClickListener() {
             @Override
             public void onItemClickListener(int position) {
@@ -68,11 +67,8 @@ public class MusicFragment extends Fragment implements MusicFragmentView {
         });
     }
 
-    public void setServiceList(ArrayList<String> url) {
-        Intent intent = new Intent(getContext(),PlayerService.class);
-        intent.putExtra("list", url);
-        intent.setAction(PlayerService.ADD_PLAYLIST);
-        getContext().startService(intent);
+    public void setServiceList(ArrayList<VkAudio> vkAudios) {
+        PlayerService.data = vkAudios;
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.example.pk.drawproject.main.MainActivity;
+import com.example.pk.drawproject.model.VkAudio;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,8 +24,6 @@ import java.util.ArrayList;
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
     private int currentSoundPosition;
     MediaPlayer mPlayer;
-    // тут зберігаємо url пісень для програшу
-    private ArrayList<String> song;
 
     Notification notification;
     Notification.Builder builder;
@@ -35,17 +34,13 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     public static final String RESUME = "ua.vkplayer.RESUME";
     public static final String PLAY_NEXT = "ua.vkplayer.PLAY_NEXT";
     public static final String PLAY_PREVOIUS = "ua.vkplayer.PLAY_PREVOIUS";
-    public static final String ADD_PLAYLIST = "ua.vkplayer.ADD_PLAYLIST";
     public static final String CLOSE_SERVICE = "ua.vkplayer.CLOSE_SERVICE";
     public final int CODE_PAUSE = 1;
     public final int CODE_NEXT = 2;
     public final int CODE_PREVIOUS = 3;
     public final int CODE_CLOSE = 4;
 
-
-    public void setSong(ArrayList<String> song) {
-        this.song = song;
-    }
+    public static ArrayList<VkAudio> data;
 
     @Override
     public void onPrepared(MediaPlayer mp) {
@@ -76,9 +71,9 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             createPlayer();
         }
         mPlayer.reset();
+        Log.d("tag","size " + data.size());
         try {
-            Log.d("tag", "songSize " + song.size());
-            mPlayer.setDataSource(song.get(position));
+            mPlayer.setDataSource(data.get(position).getUrl());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,9 +99,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             playSounds(++currentSoundPosition);
         if (flag.equals(PLAY_PREVOIUS))
             playSounds(--currentSoundPosition);
-        if (flag.equals(ADD_PLAYLIST)) {
-            setSong(intent.getStringArrayListExtra("list"));
-        }
         if (flag.equals(CLOSE_SERVICE)) {
             mPlayer.stop();
             mPlayer.reset();

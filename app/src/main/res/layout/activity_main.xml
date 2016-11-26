@@ -10,13 +10,19 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#0f2384"
-        android:title="VkPlayer"
-        app:titleTextColor="#FFF">
+        android:background="#0f2384">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:visibility="gone"
+                android:id="@+id/btn_back"
+                android:src="@drawable/ic_back"
+                android:layout_alignParentLeft="false"
+                android:layout_centerVertical="true"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -24,8 +30,21 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:text="VkPlayer"
+                android:id="@+id/toolbarTitle"
                 android:textColor="#FFF"
                 android:textSize="20sp" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/btn_back"
+                android:layout_centerVertical="true"
+                android:hint="Пошук"
+                android:textColorHint="#c2b6b6"
+                android:id="@+id/searchEdit"
+                android:visibility="gone"
+                android:layout_marginRight="40dp"
+                android:textColor="#FFF"
+                android:textSize="18sp" />
 
             <ImageButton
                 android:id="@+id/searchButton"

@@ -27,16 +27,7 @@ public class MusicPresenterImpl implements MusicPresenter {
             public void onDataLoadSucces(ArrayList<VkAudio> vkAudios) {
                 data = vkAudios;
                 setAdapter(vkAudios);
-            }
-        });
-    }
-
-    @Override
-    public void loadMusicUrl() {
-        model.getSongWithListener(new ModelInterface.SongLoadedCallBack() {
-            @Override
-            public void onSongLoadSucces(ArrayList<String> url) {
-                musicView.setServiceList(url);
+                musicView.setServiceList(vkAudios);
             }
         });
     }

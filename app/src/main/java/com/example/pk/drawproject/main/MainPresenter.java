@@ -9,6 +9,7 @@ public interface MainPresenter {
     void setFragment();
 
     void showBar(int position);
-
+    void clickSearchButton();
+    void clickBackButton();
     void barButtonClick();
 }

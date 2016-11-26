@@ -23,6 +23,16 @@ public class MainPresenterImpl implements MainPresenter {
     }
 
     @Override
+    public void clickSearchButton() {
+        mainView.showSearchToolbar();
+    }
+
+    @Override
+    public void clickBackButton() {
+        mainView.showDefaultToolbar();
+    }
+
+    @Override
     public void barButtonClick() {
     }
 

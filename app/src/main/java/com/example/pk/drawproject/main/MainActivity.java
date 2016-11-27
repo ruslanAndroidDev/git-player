@@ -3,12 +3,14 @@ package com.example.pk.drawproject.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -24,9 +26,6 @@ import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements MainView, View.OnClickListener {
     ImageButton searchButton;
@@ -49,41 +48,35 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         searchButton = (ImageButton) findViewById(R.id.searchButton);
         searchButton.setOnClickListener(this);
         searchEdit = (EditText) findViewById(R.id.searchEdit);
-        searchEdit.addTextChangedListener(
-                new TextWatcher() {
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        searchFragment.showProgress();
-                    }
-
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    private Timer timer = new Timer();
-                    private final long DELAY = 500; // milliseconds
-
-                    @Override
-                    public void afterTextChanged(final Editable s) {
-                        timer.cancel();
-                        timer = new Timer();
-                        timer.schedule(
-                                new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        runOnUiThread(this);
-                                        searchFragment.loadItem(s.toString());
-                                    }
-                                }, DELAY);
-                    }
-                }
-        );
-
-        playerLayout = (FrameLayout) findViewById(R.id.player_container);
-        Log.d("tag", "OnCreateMainActivity");
-
         presenter = new MainPresenterImpl(this);
         presenter.login();
+        searchEdit.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            Handler handler = new Handler(Looper.getMainLooper() /*UI thread*/);
+            Runnable workRunnable;
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                handler.removeCallbacks(workRunnable);
+                workRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        searchFragment.loadItem(s.toString());
+                    }
+                };
+                handler.postDelayed(workRunnable, 500 /*delay*/);
+            }
+        });
     }
 
 

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 public interface MainView {
     void addFragments(Fragment fragment);
     void showPlayerFragment();
+    void showSearchFragment();
     void showSearchToolbar();
     void showDefaultToolbar();
     void login();

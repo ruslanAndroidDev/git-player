@@ -39,10 +39,13 @@
                 android:layout_toRightOf="@+id/btn_back"
                 android:layout_centerVertical="true"
                 android:hint="Пошук"
+                android:singleLine="true"
+                android:background="@null"
+                android:focusableInTouchMode="true"
                 android:textColorHint="#c2b6b6"
                 android:id="@+id/searchEdit"
                 android:visibility="gone"
-                android:layout_marginRight="40dp"
+                android:layout_marginLeft="20dp"
                 android:textColor="#FFF"
                 android:textSize="18sp" />
 

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -16,11 +18,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.pk.drawproject.R;
+import com.example.pk.drawproject.search.SearchFragment;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements MainView, View.OnClickListener {
     ImageButton searchButton;
@@ -29,18 +35,49 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     ImageView btn_back;
     EditText searchEdit;
     TextView toolbarTitle;
+    SearchFragment searchFragment;
     private String[] scope = new String[]{VKScope.AUDIO};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        searchFragment = new SearchFragment();
         btn_back = (ImageView) findViewById(R.id.btn_back);
         btn_back.setOnClickListener(this);
         toolbarTitle = (TextView) findViewById(R.id.toolbarTitle);
         searchButton = (ImageButton) findViewById(R.id.searchButton);
         searchButton.setOnClickListener(this);
         searchEdit = (EditText) findViewById(R.id.searchEdit);
+        searchEdit.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        searchFragment.showProgress();
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    private Timer timer = new Timer();
+                    private final long DELAY = 500; // milliseconds
+
+                    @Override
+                    public void afterTextChanged(final Editable s) {
+                        timer.cancel();
+                        timer = new Timer();
+                        timer.schedule(
+                                new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        runOnUiThread(this);
+                                        searchFragment.loadItem(s.toString());
+                                    }
+                                }, DELAY);
+                    }
+                }
+        );
 
         playerLayout = (FrameLayout) findViewById(R.id.player_container);
         Log.d("tag", "OnCreateMainActivity");
@@ -56,6 +93,14 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     }
 
     @Override
+    public void showSearchFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.main_container, searchFragment);
+        ft.commit();
+    }
+
+
+    @Override
     public void login() {
         VKSdk.login(this, scope);
     }
@@ -64,8 +109,9 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         toolbarTitle.setVisibility(View.GONE);
         searchEdit.setVisibility(View.VISIBLE);
         btn_back.setVisibility(View.VISIBLE);
+        searchEdit.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(searchEdit, InputMethodManager.SHOW_IMPLICIT);
+        imm.toggleSoftInput(0, 0);
     }
 
     public void showDefaultToolbar() {
@@ -107,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     public void onClick(View v) {
         if (v.getId() == R.id.searchButton) {
             presenter.clickSearchButton();
+            showSearchFragment();
 
         } else if (v.getId() == R.id.btn_back) {
             presenter.clickBackButton();

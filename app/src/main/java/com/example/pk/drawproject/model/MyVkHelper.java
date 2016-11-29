@@ -1,6 +1,12 @@
 package com.example.pk.drawproject.model;
 
+import com.example.pk.drawproject.ui.bottomBar.ParseTask;
 import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKApi;
+import com.vk.sdk.api.VKApiConst;
+import com.vk.sdk.api.VKParameters;
+import com.vk.sdk.api.VKRequest;
+import com.vk.sdk.api.VKResponse;
 
 import java.util.ArrayList;
 
@@ -8,16 +14,17 @@ import java.util.ArrayList;
  * Created by pk on 27.11.2016.
  */
 public class MyVkHelper {
-    public ArrayList<VkAudio> searchAudio(String title){
-        ArrayList<VkAudio> data = new ArrayList<>();
-        data.add(new VkAudio("Title","sgfsg","artist","45"));
-        data.add(new VkAudio("Title1","sgfsg","artist1","45"));
-        data.add(new VkAudio("Title2","sgfsg","artis2t","25"));
-        data.add(new VkAudio("Titl3","sgfsg","artist3","43"));
-        data.add(new VkAudio("Title4","sgfsg","artist4","85"));
-        data.add(new VkAudio("Title5","sgfsg","artist5","452"));
-        data.add(new VkAudio("Title6","sgfsg","artist6","445"));
-        data.add(new VkAudio("Title7","sgfsg","artist7","5"));
-        return data;
+    public final int COUNT_SEARCH_ITEM = 50;
+
+    public void load(String soundTitle, final ModelInterface.DataLoadedCallBack callBack){
+        final VKRequest request = VKApi.audio().search(VKParameters.from(VKApiConst.Q,soundTitle,VKApiConst.COUNT,COUNT_SEARCH_ITEM));
+        request.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override
+            public void onComplete(VKResponse response) {
+                super.onComplete(response);
+                ParseTask parseTask = new ParseTask(callBack);
+                parseTask.execute(response.json);
+            }
+        });
     }
 }

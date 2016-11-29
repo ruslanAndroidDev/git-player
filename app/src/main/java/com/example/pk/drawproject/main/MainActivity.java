@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.pk.drawproject.R;
+import com.example.pk.drawproject.search.ProgressFragment;
 import com.example.pk.drawproject.search.SearchFragment;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
@@ -36,6 +37,10 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     TextView toolbarTitle;
     SearchFragment searchFragment;
     private String[] scope = new String[]{VKScope.AUDIO};
+    FragmentTransaction ft;
+    ProgressFragment progressFragment;
+
+    public static boolean isShowProgressFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         searchEdit = (EditText) findViewById(R.id.searchEdit);
         presenter = new MainPresenterImpl(this);
         presenter.login();
+
+        progressFragment = new ProgressFragment();
         searchEdit.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -59,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
+                showFragment(progressFragment);
             }
 
             Handler handler = new Handler(Looper.getMainLooper() /*UI thread*/);
@@ -71,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                 workRunnable = new Runnable() {
                     @Override
                     public void run() {
+                        showFragment(searchFragment);
                         searchFragment.loadItem(s.toString());
                     }
                 };
@@ -79,17 +87,25 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         });
     }
 
+    public void showFragment(Fragment fragment) {
+        if (fragment instanceof SearchFragment){
+            if (isShowProgressFragment){
+
+            }else{
+                ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.main_container, fragment);
+                ft.commit();
+            }
+        } else{
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.main_container, fragment);
+            ft.commit();
+        }
+    }
 
     @Override
     public void showPlayerFragment() {
         playerLayout.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void showSearchFragment() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.main_container, searchFragment);
-        ft.commit();
     }
 
 
@@ -113,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         btn_back.setVisibility(View.GONE);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchEdit.getWindowToken(), 0);
+        onBackPressed();
     }
 
     @Override
@@ -133,20 +150,10 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     }
 
     @Override
-    public void addFragments(Fragment fragment) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.main_container, fragment);
-        ft.commit();
-        FragmentTransaction playertransaction = getSupportFragmentManager().beginTransaction();
-        // playertransaction.add(R.id.player_container, new PlayerFragment());
-        playertransaction.commit();
-    }
-
-    @Override
     public void onClick(View v) {
         if (v.getId() == R.id.searchButton) {
             presenter.clickSearchButton();
-            showSearchFragment();
+            showFragment(new ProgressFragment());
 
         } else if (v.getId() == R.id.btn_back) {
             presenter.clickBackButton();

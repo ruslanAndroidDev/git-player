@@ -49,6 +49,6 @@ public class MainPresenterImpl implements MainPresenter {
 
     @Override
     public void setFragment() {
-        mainView.addFragments(new MusicFragment());
+        mainView.showFragment(new MusicFragment());
     }
 }

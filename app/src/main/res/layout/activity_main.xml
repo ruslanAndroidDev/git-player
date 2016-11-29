@@ -15,39 +15,25 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
+                android:id="@+id/btn_back"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:visibility="gone"
-                android:id="@+id/btn_back"
-                android:src="@drawable/ic_back"
                 android:layout_alignParentLeft="false"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_back"
+                android:visibility="gone" />
 
             <TextView
+                android:id="@+id/toolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:text="VkPlayer"
-                android:id="@+id/toolbarTitle"
                 android:textColor="#FFF"
                 android:textSize="20sp" />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/btn_back"
-                android:layout_centerVertical="true"
-                android:hint="Пошук"
-                android:singleLine="true"
-                android:background="@null"
-                android:focusableInTouchMode="true"
-                android:textColorHint="#c2b6b6"
-                android:id="@+id/searchEdit"
-                android:visibility="gone"
-                android:layout_marginLeft="20dp"
-                android:textColor="#FFF"
-                android:textSize="18sp" />
 
             <ImageButton
                 android:id="@+id/searchButton"
@@ -59,6 +45,24 @@
                 android:background="@null"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_search_black_24dp" />
+
+            <EditText
+                android:id="@+id/searchEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@id/searchButton"
+                android:layout_toRightOf="@+id/btn_back"
+                android:background="@null"
+                android:focusableInTouchMode="true"
+                android:hint="Пошук"
+                android:singleLine="true"
+                android:textColor="#FFF"
+                android:textColorHint="#c2b6b6"
+                android:textSize="18sp"
+                android:visibility="gone" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 

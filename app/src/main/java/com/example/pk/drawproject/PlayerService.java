@@ -13,7 +13,6 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.example.pk.drawproject.main.MainActivity;
-import com.example.pk.drawproject.model.VkAudio;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +29,8 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     public static final int PLAYER_NOTIFY = 345;
 
     public static final String PLAY_SOUND = "ua.vkplayer.PLAYSOUND";
-    public static final String PAUSE = "ua.vkplayer.PAUSE";
+    public static final String SET_DATA = "ua.vkplayer.SET_DATA";
+    public static final String MAIN_BTN = "ua.vkplayer.MAIN_BTN";
     public static final String RESUME = "ua.vkplayer.RESUME";
     public static final String PLAY_NEXT = "ua.vkplayer.PLAY_NEXT";
     public static final String PLAY_PREVOIUS = "ua.vkplayer.PLAY_PREVOIUS";
@@ -40,7 +40,8 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     public final int CODE_PREVIOUS = 3;
     public final int CODE_CLOSE = 4;
 
-    public static ArrayList<VkAudio> data;
+    public ArrayList<String> title;
+    public ArrayList<String> url;
 
     @Override
     public void onPrepared(MediaPlayer mp) {
@@ -71,13 +72,13 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             createPlayer();
         }
         mPlayer.reset();
-        Log.d("tag","size " + data.size());
         try {
-            mPlayer.setDataSource(data.get(position).getUrl());
+            mPlayer.setDataSource(url.get(position));
         } catch (IOException e) {
             e.printStackTrace();
         }
         mPlayer.prepareAsync();
+        updateNotification();
     }
 
     @Override
@@ -85,14 +86,31 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         Log.d("tag", "onStartCommand");
         String flag = intent.getAction();
         Log.d("tag", "flag" + flag);
-        if (flag.equals(PAUSE))
-            mPlayer.pause();
+        if (flag.equals(SET_DATA)) {
+            url = intent.getStringArrayListExtra("url");
+            title = intent.getStringArrayListExtra("title");
+            Log.d("tag", "setItems,data.size + service" + url.size());
+        }
+        if (flag.equals(MAIN_BTN)) {
+            int icon;
+            //1 - SetPauseIcon
+            //2 - SetStartIcon
+            if (mPlayer.isPlaying()) {
+                mPlayer.pause();
+                icon = 2;
+            } else {
+                mPlayer.start();
+                icon = 1;
+            }
+            updateNotification(icon);
+        }
+        mPlayer.pause();
         if (flag.equals(RESUME))
             mPlayer.start();
         if (flag.equals(PLAY_SOUND)) {
             Log.d("tag", "в playSound рийшло + " + intent.getIntExtra("position", 0));
             playSounds(intent.getIntExtra("position", 0));
-            startForeground(PLAYER_NOTIFY, createNotification());
+            startForeground(PLAYER_NOTIFY, notification);
         }
 
         if (flag.equals(PLAY_NEXT))
@@ -109,15 +127,16 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
     RemoteViews remoteViews;
 
-    private Notification createNotification() {
+    private void createNotification() {
         Intent intent1 = new Intent(this, MainActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(intent1);
         remoteViews = new RemoteViews(getPackageName(), R.layout.notification);
+        remoteViews.setTextViewText(R.id.notify_tv_title, title.get(currentSoundPosition));
 
-        Intent pauseIntent = new Intent(getApplicationContext(), PlayerService.class);
-        pauseIntent.setAction(PlayerService.PAUSE);
+        Intent maim_btnIntent = new Intent(getApplicationContext(), PlayerService.class);
+        maim_btnIntent.setAction(PlayerService.MAIN_BTN);
 
         Intent nextIntent = new Intent(getApplicationContext(), PlayerService.class);
         nextIntent.setAction(PlayerService.PLAY_NEXT);
@@ -128,12 +147,12 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         Intent closeIntent = new Intent(getApplicationContext(), PlayerService.class);
         closeIntent.setAction(CLOSE_SERVICE);
 
-        PendingIntent pause = PendingIntent.getService(this, CODE_PAUSE, pauseIntent, 0);
+        PendingIntent maim_btn = PendingIntent.getService(this, CODE_PAUSE, maim_btnIntent, 0);
         PendingIntent next = PendingIntent.getService(this, CODE_NEXT, nextIntent, 0);
         PendingIntent previous = PendingIntent.getService(this, CODE_PREVIOUS, previousIntent, 0);
         PendingIntent close = PendingIntent.getService(this, CODE_CLOSE, closeIntent, 0);
 
-        remoteViews.setOnClickPendingIntent(R.id.notif_pause, pause);
+        remoteViews.setOnClickPendingIntent(R.id.notif_maim_btn, maim_btn);
         remoteViews.setOnClickPendingIntent(R.id.notif_next, next);
         remoteViews.setOnClickPendingIntent(R.id.notif_previous, previous);
         remoteViews.setOnClickPendingIntent(R.id.notif_close, close);
@@ -144,19 +163,19 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 .setContent(remoteViews);
         notification = builder.build();
         notification.bigContentView = remoteViews;
-        return notification;
     }
 
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d("tag", "OnCreate");
+    private void updateNotification() {
+        if (remoteViews == null)
+            createNotification();
+        remoteViews.setTextViewText(R.id.notify_tv_title, title.get(currentSoundPosition));
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("tag", "OnDestroy");
+    private void updateNotification(int btnFlag) {
+        if (btnFlag == 1) {
+            remoteViews.setImageViewResource(R.id.notif_maim_btn, R.drawable.ic_pause_white_48dp);
+        } else {
+            remoteViews.setImageViewResource(R.id.notif_maim_btn, R.drawable.ic_play);
+        }
     }
 }

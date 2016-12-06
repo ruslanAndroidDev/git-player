@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.pk.drawproject.R;
-import com.example.pk.drawproject.model.VkAudio;
+import com.example.pk.drawproject.model.VkAudioModel;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Created by pk on 17.10.2016.
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
-    ArrayList<VkAudio> audiodata;
+    ArrayList<VkAudioModel> audiodata;
     Context context;
     private RecyclerItemClickListener recyclerItemClickListener;
 
@@ -24,7 +24,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.recyclerItemClickListener = recyclerItemClickListener;
     }
 
-    public RecyclerViewAdapter(ArrayList<VkAudio> audiodata, Context context) {
+    public RecyclerViewAdapter(ArrayList<VkAudioModel> audiodata, Context context) {
         this.context = context;
         this.audiodata = audiodata;
     }

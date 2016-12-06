@@ -1,13 +1,12 @@
 package com.example.pk.drawproject.musicFragment;
 
-import com.example.pk.drawproject.model.VkAudio;
+import com.example.pk.drawproject.model.VkAudioModel;
 import java.util.ArrayList;
 
 /**
  * Created by pk on 05.11.2016.
  */
 public interface MusicFragmentView {
-    void setAdapter(ArrayList<VkAudio> vkAudios);
+    void setAdapter(ArrayList<VkAudioModel> vkAudios);
     void playSound(int songPosition);
-    void setServiceList(ArrayList<VkAudio> vkAudios);
 }

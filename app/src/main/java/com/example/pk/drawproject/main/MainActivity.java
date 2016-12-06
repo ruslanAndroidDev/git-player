@@ -5,21 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.pk.drawproject.R;
+import com.example.pk.drawproject.musicFragment.MusicFragment;
 import com.example.pk.drawproject.search.ProgressFragment;
 import com.example.pk.drawproject.search.SearchFragment;
 import com.vk.sdk.VKAccessToken;
@@ -31,7 +28,6 @@ import com.vk.sdk.api.VKError;
 public class MainActivity extends AppCompatActivity implements MainView, View.OnClickListener {
     ImageButton searchButton;
     MainPresenterImpl presenter;
-    FrameLayout playerLayout;
     ImageView btn_back;
     EditText searchEdit;
     TextView toolbarTitle;
@@ -66,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                showFragment(progressFragment);
+                showProgressFragment();
             }
 
             Handler handler = new Handler(Looper.getMainLooper() /*UI thread*/);
@@ -78,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                 workRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        showFragment(searchFragment);
+                        showSearchFragment();
                         searchFragment.loadItem(s.toString());
                     }
                 };
@@ -87,31 +83,34 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         });
     }
 
-    public void showFragment(Fragment fragment) {
-        if (fragment instanceof SearchFragment){
-            if (isShowProgressFragment){
+    @Override
+    public void login() {
+        VKSdk.login(this, scope);
+    }
 
-            }else{
-                ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.main_container, fragment);
-                ft.commit();
-            }
-        } else{
+    @Override
+    public void showProgressFragment() {
+        if (isShowProgressFragment) {
+
+        } else {
             ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.main_container, fragment);
+            ft.replace(R.id.main_container, progressFragment);
             ft.commit();
         }
     }
 
     @Override
-    public void showPlayerFragment() {
-        playerLayout.setVisibility(View.VISIBLE);
+    public void showMainFragment() {
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.main_container, new MusicFragment());
+        ft.commit();
     }
 
-
     @Override
-    public void login() {
-        VKSdk.login(this, scope);
+    public void showSearchFragment() {
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.main_container, searchFragment);
+        ft.commit();
     }
 
     public void showSearchToolbar() {
@@ -137,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
-                presenter.setFragment();
+                showMainFragment();
             }
 
             @Override
@@ -153,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     public void onClick(View v) {
         if (v.getId() == R.id.searchButton) {
             presenter.clickSearchButton();
-            showFragment(new ProgressFragment());
 
         } else if (v.getId() == R.id.btn_back) {
             presenter.clickBackButton();

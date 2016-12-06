@@ -6,8 +6,9 @@ import android.support.v4.app.Fragment;
  * Created by pk on 05.11.2016.
  */
 public interface MainView {
-    void showFragment(Fragment fragment);
-    void showPlayerFragment();
+    void showProgressFragment();
+    void showMainFragment();
+    void showSearchFragment();
     void showSearchToolbar();
     void showDefaultToolbar();
     void login();

@@ -1,8 +1,8 @@
 package com.example.pk.drawproject.musicFragment;
 
-import com.example.pk.drawproject.model.Model;
-import com.example.pk.drawproject.model.ModelInterface;
-import com.example.pk.drawproject.model.VkAudio;
+import com.example.pk.drawproject.model.OnDataLoadInterface;
+import com.example.pk.drawproject.model.MyVkHelper;
+import com.example.pk.drawproject.model.VkAudioModel;
 
 import java.util.ArrayList;
 
@@ -11,9 +11,9 @@ import java.util.ArrayList;
  */
 public class MusicPresenterImpl implements MusicPresenter {
     MusicFragmentView musicView;
-    public static ArrayList<VkAudio> data;
+    public static ArrayList<VkAudioModel> data;
 
-    Model model;
+    MyVkHelper helper;
 
     public MusicPresenterImpl(MusicFragmentView musicView) {
         this.musicView = musicView;
@@ -21,13 +21,12 @@ public class MusicPresenterImpl implements MusicPresenter {
 
     @Override
     public void loadMusicItems() {
-        model = new Model();
-        model.getVkSoundListWithListener(new ModelInterface.DataLoadedCallBack() {
+        helper = new MyVkHelper();
+        helper.getVkSoundListWithListener(new OnDataLoadInterface.DataLoadedCallBack() {
             @Override
-            public void onDataLoadSucces(ArrayList<VkAudio> vkAudios) {
+            public void onDataLoadSucces(ArrayList<VkAudioModel> vkAudios) {
                 data = vkAudios;
                 setAdapter(vkAudios);
-                musicView.setServiceList(vkAudios);
             }
         });
     }
@@ -38,7 +37,7 @@ public class MusicPresenterImpl implements MusicPresenter {
     }
 
     @Override
-    public void setAdapter(ArrayList<VkAudio> vkAudios) {
+    public void setAdapter(ArrayList<VkAudioModel> vkAudios) {
         musicView.setAdapter(vkAudios);
     }
 

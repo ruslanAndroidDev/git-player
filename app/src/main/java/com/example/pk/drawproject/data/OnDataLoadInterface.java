@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.model;
+package com.example.pk.drawproject.data;
 
 import java.util.ArrayList;
 

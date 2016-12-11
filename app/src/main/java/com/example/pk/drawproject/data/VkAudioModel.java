@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.model;
+package com.example.pk.drawproject.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

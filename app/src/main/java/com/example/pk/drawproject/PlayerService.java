@@ -104,7 +104,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             }
             updateNotification(icon);
         }
-        mPlayer.pause();
         if (flag.equals(RESUME))
             mPlayer.start();
         if (flag.equals(PLAY_SOUND)) {
@@ -120,7 +119,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         if (flag.equals(CLOSE_SERVICE)) {
             mPlayer.stop();
             mPlayer.reset();
-            stopSelf();
+            stopForeground(true);
         }
         return START_NOT_STICKY;
     }
@@ -169,6 +168,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         if (remoteViews == null)
             createNotification();
         remoteViews.setTextViewText(R.id.notify_tv_title, title.get(currentSoundPosition));
+        startForeground(PLAYER_NOTIFY, notification);
     }
 
     private void updateNotification(int btnFlag) {
@@ -177,5 +177,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         } else {
             remoteViews.setImageViewResource(R.id.notif_maim_btn, R.drawable.ic_play);
         }
+        startForeground(PLAYER_NOTIFY, notification);
     }
 }

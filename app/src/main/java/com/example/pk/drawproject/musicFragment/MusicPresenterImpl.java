@@ -1,8 +1,11 @@
 package com.example.pk.drawproject.musicFragment;
 
-import com.example.pk.drawproject.model.OnDataLoadInterface;
-import com.example.pk.drawproject.model.MyVkHelper;
-import com.example.pk.drawproject.model.VkAudioModel;
+import android.content.Context;
+
+import com.example.pk.drawproject.DivideData;
+import com.example.pk.drawproject.data.OnDataLoadInterface;
+import com.example.pk.drawproject.data.MyVkHelper;
+import com.example.pk.drawproject.data.VkAudioModel;
 
 import java.util.ArrayList;
 
@@ -14,9 +17,11 @@ public class MusicPresenterImpl implements MusicPresenter {
     public static ArrayList<VkAudioModel> data;
 
     MyVkHelper helper;
+    Context context;
 
-    public MusicPresenterImpl(MusicFragmentView musicView) {
+    public MusicPresenterImpl(MusicFragmentView musicView,Context context) {
         this.musicView = musicView;
+        this.context = context;
     }
 
     @Override
@@ -27,6 +32,8 @@ public class MusicPresenterImpl implements MusicPresenter {
             public void onDataLoadSucces(ArrayList<VkAudioModel> vkAudios) {
                 data = vkAudios;
                 setAdapter(vkAudios);
+                DivideData divideData = new DivideData(context);
+                divideData.execute(vkAudios);
             }
         });
     }

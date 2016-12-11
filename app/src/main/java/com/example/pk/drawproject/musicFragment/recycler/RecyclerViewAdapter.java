@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.pk.drawproject.R;
-import com.example.pk.drawproject.model.VkAudioModel;
+import com.example.pk.drawproject.data.VkAudioModel;
 
 import java.util.ArrayList;
 

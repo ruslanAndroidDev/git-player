@@ -1,6 +1,6 @@
 package com.example.pk.drawproject.musicFragment;
 
-import com.example.pk.drawproject.model.VkAudioModel;
+import com.example.pk.drawproject.data.VkAudioModel;
 
 import java.util.ArrayList;
 

@@ -9,12 +9,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.pk.drawproject.R;
 import com.example.pk.drawproject.musicFragment.MusicFragment;
 import com.example.pk.drawproject.search.ProgressFragment;
@@ -53,6 +56,18 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         presenter.login();
 
         progressFragment = new ProgressFragment();
+
+        searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(searchEdit.getWindowToken(), 0);
+                }
+                return true;
+            }
+        });
+
         searchEdit.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -128,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         btn_back.setVisibility(View.GONE);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchEdit.getWindowToken(), 0);
-        onBackPressed();
     }
 
     @Override

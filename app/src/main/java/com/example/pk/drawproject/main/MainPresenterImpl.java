@@ -1,11 +1,5 @@
 package com.example.pk.drawproject.main;
 
-import android.util.Log;
-
-import com.example.pk.drawproject.main.MainPresenter;
-import com.example.pk.drawproject.main.MainView;
-import com.example.pk.drawproject.musicFragment.MusicFragment;
-import com.example.pk.drawproject.search.ProgressFragment;
 import com.vk.sdk.VKSdk;
 
 /**
@@ -20,24 +14,21 @@ public class MainPresenterImpl implements MainPresenter {
 
     @Override
     public void clickSearchButton() {
-        mainView.showSearchToolbar();
+        mainView.showSearchToolbar(true);
         mainView.showProgressFragment();
     }
 
     @Override
     public void clickBackButton() {
         mainView.showDefaultToolbar();
-        mainView.showMainFragment();
+        mainView.showMusicListFragment();
     }
 
     @Override
     public void login() {
-        if (VKSdk.isLoggedIn()) {
-            Log.d("tag", "vkLoggin");
-            mainView.showMainFragment();
-        } else {
+        if (!VKSdk.isLoggedIn()) {
             mainView.login();
-            mainView.showMainFragment();
         }
+        mainView.showMusicListFragment();
     }
 }

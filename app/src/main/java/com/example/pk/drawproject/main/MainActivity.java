@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -19,9 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.pk.drawproject.R;
-import com.example.pk.drawproject.musicFragment.MusicFragment;
-import com.example.pk.drawproject.search.ProgressFragment;
-import com.example.pk.drawproject.search.SearchFragment;
+import com.example.pk.drawproject.musicFragment.MusicListFragment;
+import com.example.pk.drawproject.musicFragment.ProgressFragment;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
@@ -34,18 +34,15 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     ImageView btn_back;
     EditText searchEdit;
     TextView toolbarTitle;
-    SearchFragment searchFragment;
     private String[] scope = new String[]{VKScope.AUDIO};
     FragmentTransaction ft;
     ProgressFragment progressFragment;
-
-    public static boolean isShowProgressFragment;
+    MusicListFragment musicListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        searchFragment = new SearchFragment();
         btn_back = (ImageView) findViewById(R.id.btn_back);
         btn_back.setOnClickListener(this);
         toolbarTitle = (TextView) findViewById(R.id.toolbarTitle);
@@ -53,8 +50,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         searchButton.setOnClickListener(this);
         searchEdit = (EditText) findViewById(R.id.searchEdit);
         presenter = new MainPresenterImpl(this);
-        presenter.login();
 
+        musicListFragment = new MusicListFragment();
         progressFragment = new ProgressFragment();
 
         searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -67,35 +64,38 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                 return true;
             }
         });
+//        searchEdit.addTextChangedListener(new TextWatcher() {
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+//                showProgressFragment();
+//            }
+//
+//            Handler handler = new Handler(Looper.getMainLooper() /*UI thread*/);
+//            Runnable workRunnable;
+//
+//            @Override
+//            public void afterTextChanged(final Editable s) {
+//                handler.removeCallbacks(workRunnable);
+//                workRunnable = new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        musicListFragment.showSearchableAudioList(s.toString());
+//                    }
+//                };
+//                handler.postDelayed(workRunnable, 500 /*delay*/);
+//            }
+//        });
 
-        searchEdit.addTextChangedListener(new TextWatcher() {
+        showMusicListFragment();
+        presenter.login();
+        musicListFragment.showMyAudioList();
 
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                showProgressFragment();
-            }
-
-            Handler handler = new Handler(Looper.getMainLooper() /*UI thread*/);
-            Runnable workRunnable;
-
-            @Override
-            public void afterTextChanged(final Editable s) {
-                handler.removeCallbacks(workRunnable);
-                workRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        showSearchFragment();
-                        searchFragment.loadItem(s.toString());
-                    }
-                };
-                handler.postDelayed(workRunnable, 500 /*delay*/);
-            }
-        });
     }
 
     @Override
@@ -105,36 +105,27 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
     @Override
     public void showProgressFragment() {
-        if (isShowProgressFragment) {
-
-        } else {
-            ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.main_container, progressFragment);
-            ft.commit();
-        }
-    }
-
-    @Override
-    public void showMainFragment() {
         ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.main_container, new MusicFragment());
+        ft.replace(R.id.main_container, progressFragment);
         ft.commit();
     }
 
     @Override
-    public void showSearchFragment() {
+    public void showMusicListFragment() {
         ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.main_container, searchFragment);
+        ft.replace(R.id.main_container,musicListFragment);
         ft.commit();
     }
 
-    public void showSearchToolbar() {
+    public void showSearchToolbar(boolean openKeyboard) {
         toolbarTitle.setVisibility(View.GONE);
         searchEdit.setVisibility(View.VISIBLE);
         btn_back.setVisibility(View.VISIBLE);
         searchEdit.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(0, 0);
+        if (openKeyboard) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(0, 0);
+        }
     }
 
     public void showDefaultToolbar() {
@@ -150,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
-                showMainFragment();
+                showMusicListFragment();
             }
 
             @Override

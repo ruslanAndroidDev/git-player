@@ -1,4 +1,4 @@
-package com.example.pk.drawproject.search;
+package com.example.pk.drawproject.musicFragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,13 +29,13 @@ public class ProgressFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadingView.start();
-        MainActivity.isShowProgressFragment = true;
+      //  MainActivity.isShowProgressFragment = true;
     }
 
     @Override
     public void onPause() {
         super.onPause();
         loadingView.stop();
-        MainActivity.isShowProgressFragment = false;
+     //   MainActivity.isShowProgressFragment = false;
     }
 }

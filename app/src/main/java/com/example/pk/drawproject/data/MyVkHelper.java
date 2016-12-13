@@ -1,8 +1,11 @@
 package com.example.pk.drawproject.data;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.pk.drawproject.PlayerService;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKParameters;
@@ -33,8 +36,13 @@ public class MyVkHelper {
             }
         });
     }
+    public void divideData(ArrayList<VkAudioModel> vkAudios,Context context){
+        DivideDataTask divideDataTask = new DivideDataTask(context);
+        divideDataTask.execute(vkAudios);
 
-    public void getVkSoundListWithListener(final OnDataLoadInterface.DataLoadedCallBack callBack) {
+    }
+
+    public void getMySoundListWithListener(final OnDataLoadInterface.DataLoadedCallBack callBack) {
         final VKRequest request = VKApi.audio().get(VKParameters.from(VKApiConst.COUNT, 500));
         request.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
@@ -45,6 +53,7 @@ public class MyVkHelper {
             }
         });
     }
+
     public class ParseTask extends AsyncTask<JSONObject, Void, ArrayList<VkAudioModel>> {
 
         ArrayList<VkAudioModel> data;
@@ -66,7 +75,6 @@ public class MyVkHelper {
 
         private ArrayList<VkAudioModel> parseJson(JSONObject json) {
             data = new ArrayList<>();
-            Log.d("tag", "sizeJson" + json.length());
             try {
                 JSONObject responce = json.getJSONObject("response");
                 JSONArray items = responce.getJSONArray("items");
@@ -81,4 +89,34 @@ public class MyVkHelper {
             return data;
         }
     }
+
+
+    public class DivideDataTask extends AsyncTask<ArrayList<VkAudioModel>, Void, Void> {
+        final ArrayList<String> url = new ArrayList<>();
+        final ArrayList<String> title = new ArrayList<>();
+        Context context;
+
+        public DivideDataTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected Void doInBackground(ArrayList<VkAudioModel>... params) {
+            for (int i = 0; i < params[0].size(); i++) {
+                url.add(params[0].get(i).getUrl());
+                title.add(params[0].get(i).getTitle());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Intent intent = new Intent(context, PlayerService.class);
+            intent.putStringArrayListExtra("url", url);
+            intent.putStringArrayListExtra("title", title);
+            intent.setAction(PlayerService.SET_DATA);
+            context.startService(intent);
+        }
+    }
+
 }

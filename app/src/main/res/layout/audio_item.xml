@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="false"
     android:background="?android:attr/selectableItemBackground">
+    <es.claucookie.miniequalizerlibrary.EqualizerView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/equalizer"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        app:animDuration="4000"
+        android:visibility="gone"
+        app:foregroundColor="@color/colorPrimary"></es.claucookie.miniequalizerlibrary.EqualizerView>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Старенький трамвай"
         android:id="@+id/titleTv"
+        android:layout_toRightOf="@+id/equalizer"
         android:textSize="18sp"
         android:layout_marginTop="10dp"
         android:maxWidth="300dp"
@@ -17,6 +30,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/equalizer"
         android:text="Пікардійська терція"
         android:id="@+id/groupTv"
         android:textSize="16sp"

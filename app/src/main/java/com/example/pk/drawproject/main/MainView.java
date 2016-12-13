@@ -6,9 +6,8 @@ package com.example.pk.drawproject.main;
  */
 public interface MainView {
     void showProgressFragment();
-    void showMainFragment();
-    void showSearchFragment();
-    void showSearchToolbar();
+    void showMusicListFragment();
+    void showSearchToolbar(boolean openKeyboard);
     void showDefaultToolbar();
     void login();
 }

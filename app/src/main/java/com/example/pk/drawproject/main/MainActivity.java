@@ -3,13 +3,8 @@ package com.example.pk.drawproject.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -20,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.pk.drawproject.R;
+import com.example.pk.drawproject.data.PlayerInterfaces;
 import com.example.pk.drawproject.musicFragment.MusicListFragment;
 import com.example.pk.drawproject.musicFragment.ProgressFragment;
 import com.vk.sdk.VKAccessToken;
@@ -39,10 +35,13 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     ProgressFragment progressFragment;
     MusicListFragment musicListFragment;
 
+    static PlayerInterfaces.FragmentAction fragmentAction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        musicListFragment = new MusicListFragment();
         btn_back = (ImageView) findViewById(R.id.btn_back);
         btn_back.setOnClickListener(this);
         toolbarTitle = (TextView) findViewById(R.id.toolbarTitle);
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         searchEdit = (EditText) findViewById(R.id.searchEdit);
         presenter = new MainPresenterImpl(this);
 
-        musicListFragment = new MusicListFragment();
         progressFragment = new ProgressFragment();
 
         searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -94,8 +92,11 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
         showMusicListFragment();
         presenter.login();
-        musicListFragment.showMyAudioList();
+    }
 
+    public static void setListener(PlayerInterfaces.FragmentAction action) {
+        fragmentAction = action;
+        fragmentAction.showMyAudioList();
     }
 
     @Override
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @Override
     public void showMusicListFragment() {
         ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.main_container,musicListFragment);
+        ft.replace(R.id.main_container, musicListFragment);
         ft.commit();
     }
 

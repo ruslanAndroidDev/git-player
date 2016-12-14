@@ -3,7 +3,6 @@ package com.example.pk.drawproject.data;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.pk.drawproject.PlayerService;
 import com.vk.sdk.api.VKApi;
@@ -25,7 +24,7 @@ public class MyVkHelper {
     public final int COUNT_SEARCH_ITEM = 50;
 
 
-    public void searchAudio(String soundTitle, final OnDataLoadInterface.DataLoadedCallBack callBack) {
+    public void searchAudio(String soundTitle, final PlayerInterfaces.DataLoadedCallBack callBack) {
         final VKRequest request = VKApi.audio().search(VKParameters.from(VKApiConst.Q, soundTitle, VKApiConst.COUNT, COUNT_SEARCH_ITEM));
         request.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
@@ -42,7 +41,7 @@ public class MyVkHelper {
 
     }
 
-    public void getMySoundListWithListener(final OnDataLoadInterface.DataLoadedCallBack callBack) {
+    public void getMySoundListWithListener(final PlayerInterfaces.DataLoadedCallBack callBack) {
         final VKRequest request = VKApi.audio().get(VKParameters.from(VKApiConst.COUNT, 500));
         request.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
@@ -57,9 +56,9 @@ public class MyVkHelper {
     public class ParseTask extends AsyncTask<JSONObject, Void, ArrayList<VkAudioModel>> {
 
         ArrayList<VkAudioModel> data;
-        private OnDataLoadInterface.DataLoadedCallBack myсallBack;
+        private PlayerInterfaces.DataLoadedCallBack myсallBack;
 
-        public ParseTask(OnDataLoadInterface.DataLoadedCallBack myсallBack) {
+        public ParseTask(PlayerInterfaces.DataLoadedCallBack myсallBack) {
             this.myсallBack = myсallBack;
         }
 

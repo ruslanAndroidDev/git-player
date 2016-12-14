@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 
 import com.example.pk.drawproject.PlayerService;
 import com.example.pk.drawproject.R;
+import com.example.pk.drawproject.data.PlayerInterfaces;
 import com.example.pk.drawproject.data.VkAudioModel;
+import com.example.pk.drawproject.main.MainActivity;
 import com.example.pk.drawproject.musicFragment.recycler.RecyclerItemClickListener;
 import com.example.pk.drawproject.musicFragment.recycler.RecyclerViewAdapter;
 
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by pk on 28.10.2016.
  */
-public class MusicListFragment extends Fragment implements MusicFragmentView {
+public class MusicListFragment extends Fragment implements MusicFragmentView, PlayerInterfaces.FragmentAction {
     RecyclerView music_Recycler_View;
     MusicPresenterImpl musicPresenterImpl;
 
@@ -29,6 +31,7 @@ public class MusicListFragment extends Fragment implements MusicFragmentView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         musicPresenterImpl = new MusicPresenterImpl(this, getContext());
+        MainActivity.setListener(this);
     }
 
     @Nullable
@@ -40,11 +43,13 @@ public class MusicListFragment extends Fragment implements MusicFragmentView {
         return v;
     }
 
+    @Override
     public void showMyAudioList() {
         musicPresenterImpl.loadMyMusicItems();
     }
 
-    public void showSearchableAudioList(String text) {
+    @Override
+    public void showSearchAudioList(String text) {
         musicPresenterImpl.loadSearchableAudioList(text);
     }
 

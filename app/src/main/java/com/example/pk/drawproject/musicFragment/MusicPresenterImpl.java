@@ -3,7 +3,7 @@ package com.example.pk.drawproject.musicFragment;
 import android.content.Context;
 
 import com.example.pk.drawproject.data.MyVkHelper;
-import com.example.pk.drawproject.data.OnDataLoadInterface;
+import com.example.pk.drawproject.data.PlayerInterfaces;
 import com.example.pk.drawproject.data.VkAudioModel;
 
 import java.util.ArrayList;
@@ -25,11 +25,11 @@ public class MusicPresenterImpl implements MusicPresenter {
     @Override
     public void loadMyMusicItems() {
         helper = new MyVkHelper();
-        helper.getMySoundListWithListener(new OnDataLoadInterface.DataLoadedCallBack() {
+        helper.getMySoundListWithListener(new PlayerInterfaces.DataLoadedCallBack() {
             @Override
             public void onDataLoadSucces(ArrayList<VkAudioModel> vkAudios) {
                 musicView.setAdapter(vkAudios);
-                helper.divideData(vkAudios,context);
+                helper.divideData(vkAudios, context);
             }
         });
     }
@@ -41,11 +41,11 @@ public class MusicPresenterImpl implements MusicPresenter {
 
     @Override
     public void loadSearchableAudioList(String text) {
-        helper.searchAudio(text, new OnDataLoadInterface.DataLoadedCallBack() {
+        helper.searchAudio(text, new PlayerInterfaces.DataLoadedCallBack() {
             @Override
             public void onDataLoadSucces(ArrayList<VkAudioModel> vkAudios) {
                 musicView.setAdapter(vkAudios);
-                helper.divideData(vkAudios,context);
+                helper.divideData(vkAudios, context);
             }
         });
     }

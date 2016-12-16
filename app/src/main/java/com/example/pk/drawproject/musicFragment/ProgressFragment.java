@@ -29,13 +29,11 @@ public class ProgressFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadingView.start();
-      //  MainActivity.isShowProgressFragment = true;
     }
 
     @Override
     public void onPause() {
         super.onPause();
         loadingView.stop();
-     //   MainActivity.isShowProgressFragment = false;
     }
 }

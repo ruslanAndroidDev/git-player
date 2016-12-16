@@ -3,8 +3,12 @@ package com.example.pk.drawproject.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     FragmentTransaction ft;
     ProgressFragment progressFragment;
     MusicListFragment musicListFragment;
+    TextWatcher textWatcher;
 
     static PlayerInterfaces.FragmentAction fragmentAction;
 
@@ -58,40 +63,53 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(searchEdit.getWindowToken(), 0);
+                    showMusicListFragment();
+                    fragmentAction.showSearchAudioList(searchEdit.getText().toString());
                 }
                 return true;
             }
         });
-//        searchEdit.addTextChangedListener(new TextWatcher() {
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-//                showProgressFragment();
-//            }
-//
-//            Handler handler = new Handler(Looper.getMainLooper() /*UI thread*/);
-//            Runnable workRunnable;
-//
-//            @Override
-//            public void afterTextChanged(final Editable s) {
-//                handler.removeCallbacks(workRunnable);
-//                workRunnable = new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        musicListFragment.showSearchableAudioList(s.toString());
-//                    }
-//                };
-//                handler.postDelayed(workRunnable, 500 /*delay*/);
-//            }
-//        });
 
+        createTextWatcher();
         showMusicListFragment();
         presenter.login();
+    }
+
+    void createTextWatcher() {
+        textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                showProgressFragment();
+            }
+
+            Handler handler = new Handler(Looper.getMainLooper() /*UI thread*/);
+            Runnable workRunnable;
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                handler.removeCallbacks(workRunnable);
+                workRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        showMusicListFragment();
+                        fragmentAction.showSearchAudioList(s.toString());
+                    }
+                };
+                handler.postDelayed(workRunnable, 500 /*delay*/);
+            }
+        };
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        searchEdit.removeTextChangedListener(textWatcher);
     }
 
     public static void setListener(PlayerInterfaces.FragmentAction action) {
@@ -127,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(0, 0);
         }
+        searchEdit.addTextChangedListener(textWatcher);
     }
 
     public void showDefaultToolbar() {
@@ -135,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         btn_back.setVisibility(View.GONE);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchEdit.getWindowToken(), 0);
+        searchEdit.removeTextChangedListener(textWatcher);
     }
 
     @Override
@@ -163,4 +183,5 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
             presenter.clickBackButton();
         }
     }
+
 }

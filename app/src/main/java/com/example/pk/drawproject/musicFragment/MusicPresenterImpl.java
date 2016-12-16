@@ -41,6 +41,7 @@ public class MusicPresenterImpl implements MusicPresenter {
 
     @Override
     public void loadSearchableAudioList(String text) {
+        helper = new MyVkHelper();
         helper.searchAudio(text, new PlayerInterfaces.DataLoadedCallBack() {
             @Override
             public void onDataLoadSucces(ArrayList<VkAudioModel> vkAudios) {

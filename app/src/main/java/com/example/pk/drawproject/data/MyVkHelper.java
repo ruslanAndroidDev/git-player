@@ -3,6 +3,7 @@ package com.example.pk.drawproject.data;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.pk.drawproject.PlayerService;
 import com.vk.sdk.api.VKApi;
@@ -35,7 +36,8 @@ public class MyVkHelper {
             }
         });
     }
-    public void divideData(ArrayList<VkAudioModel> vkAudios,Context context){
+
+    public void divideData(ArrayList<VkAudioModel> vkAudios, Context context) {
         DivideDataTask divideDataTask = new DivideDataTask(context);
         divideDataTask.execute(vkAudios);
 
@@ -73,14 +75,21 @@ public class MyVkHelper {
         }
 
         private ArrayList<VkAudioModel> parseJson(JSONObject json) {
+            Log.d("tag", json.toString());
             data = new ArrayList<>();
+            VkAudioModel vkAudio = null;
             try {
                 JSONObject responce = json.getJSONObject("response");
                 JSONArray items = responce.getJSONArray("items");
                 for (int i = items.length() - 1; i >= 0; i--) {
                     JSONObject music = items.getJSONObject(i);
-                    VkAudioModel vkAudio = new VkAudioModel(music.getString("title"), music.getString("url"), music.getString("artist"), music.getString("duration"));
-                    data.add(0, vkAudio);
+                    try {
+                        vkAudio = new VkAudioModel(music.getString("title"), music.getString("url"), music.getString("artist"), music.getString("duration"), music.getString("lyrics_id"));
+                    } catch (JSONException exeption) {
+                        vkAudio = new VkAudioModel(music.getString("title"), music.getString("url"), music.getString("artist"), music.getString("duration"), "");
+                    } finally {
+                        data.add(0, vkAudio);
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

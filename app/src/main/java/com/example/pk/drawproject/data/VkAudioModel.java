@@ -9,14 +9,17 @@ public class VkAudioModel{
     private String url;
     private String artist;
     private String duration;
+
+    private String lyrics_id;
     private boolean isChoise;
 
-    public VkAudioModel(String title, String url, String artist, String duration) {
+    public VkAudioModel(String title, String url, String artist, String duration,String lyrics_id) {
         this.title = title;
         this.url = url;
         this.artist = artist;
         this.duration = duration;
         this.isChoise = false;
+        this.lyrics_id = lyrics_id;
     }
 
     public boolean isChoise() {
@@ -42,6 +45,9 @@ public class VkAudioModel{
 
     public String getArtist() {
         return artist;
+    }
+    public String getLyrics_id() {
+        return lyrics_id;
     }
 
 }

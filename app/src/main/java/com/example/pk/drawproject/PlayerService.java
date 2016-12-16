@@ -3,7 +3,10 @@ package com.example.pk.drawproject;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
@@ -42,6 +45,16 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
     public ArrayList<String> title;
     public ArrayList<String> url;
+
+    MusicIntentReceiver musicIntentReceiver;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        musicIntentReceiver = new MusicIntentReceiver();
+        IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+        registerReceiver(musicIntentReceiver, filter);
+    }
 
     @Override
     public void onPrepared(MediaPlayer mp) {
@@ -178,5 +191,35 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             remoteViews.setImageViewResource(R.id.notif_maim_btn, R.drawable.ic_play);
         }
         startForeground(PLAYER_NOTIFY, notification);
+    }
+
+    private class MusicIntentReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
+                int state = intent.getIntExtra("state", -1);
+                switch (state) {
+                    case 0:
+                        // Headset is unplugged
+                        if (mPlayer==null){
+
+                        }else if (mPlayer.isPlaying()) {
+                            mPlayer.pause();
+                            int icon = 2;
+                            updateNotification(icon);
+                        }
+                        break;
+                    case 1:
+                        //Headset is plugged
+                        break;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(musicIntentReceiver);
     }
 }
